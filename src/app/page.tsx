@@ -114,7 +114,7 @@ export default function Home() {
                 }}
                 className={cn(
                   "block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
-                  selectedCategory === category.label ? "bg-gray-200 dark:bg-gray-700" : ""
+                  selectedCategory === category.label ? "bg-primary text-primary-foreground" : ""
                 )}
               >
                 {category.label}
