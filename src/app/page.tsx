@@ -198,6 +198,7 @@ export default function Home() {
                         width={200}
                         height={150}
                         className="rounded-md object-cover"
+                        style={{maxWidth: '100%', maxHeight: '100%'}}
                     />
                   </div>
                   <CardContent>
