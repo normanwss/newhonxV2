@@ -20,6 +20,10 @@ const companyName = 'Acme Corp';
 
 const productCategories = [
   {
+    name: 'All',
+    subcategories: [],
+  },
+  {
     name: 'Category 1',
     subcategories: ['Subcategory 1.1', 'Subcategory 1.2'],
   },
@@ -34,6 +38,10 @@ const productCategories = [
   {
     name: 'Category 4',
     subcategories: ['Subcategory 4.1'],
+  },
+  {
+    name: 'Advantages',
+    subcategories: [],
   },
 ];
 
@@ -88,6 +96,10 @@ export default function Home() {
     setSelectedCategory(categoryName);
   };
 
+  const handleAdvantageCategoryClick = () => {
+    setSelectedCategory('Advantages');
+  };
+
   return (
     <>
       <div className="flex items-center justify-between p-4 bg-secondary rounded-md shadow-md">
@@ -117,7 +129,14 @@ export default function Home() {
               setCurrentSubMenu(null);
               setIsSubMenuOpen(false);
             }}>
-            <MenubarTrigger onClick={() => handleCategoryClick(category.name)} className={selectedCategory === category.name ? 'bg-accent text-accent-foreground rounded-md' : 'rounded-md'}>
+            <MenubarTrigger
+              onClick={
+                category.name === 'Advantages'
+                  ? handleAdvantageCategoryClick
+                  : () => handleCategoryClick(category.name)
+              }
+              className={selectedCategory === category.name ? 'bg-accent text-accent-foreground rounded-md' : 'rounded-md'}
+            >
               {category.name}
               {category.subcategories.length > 0 && <Badge className="ml-2">+{category.subcategories.length}</Badge>}
             </MenubarTrigger>
@@ -134,94 +153,121 @@ export default function Home() {
         ))}
       </Menubar>
 
-      <Card>
-        <CardHeader>
-            <CardTitle>Product Gallery</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ScrollArea className="w-full whitespace-nowrap">
-            <div className="flex animate-horizontal-scroll">
-              {keyProducts.map(product => (
-                <Link
-                  key={product.id}
-                  href={`/product/${product.id}`}
-                >
-                  <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                    <div className="flex justify-center items-center h-32">
-                      <Image
-                        src={product.imageSrc}
-                        alt={product.name}
-                        width={200}
-                        height={150}
-                        className="rounded-md object-cover"
-                        style={{ maxWidth: '100%', maxHeight: '100%' }}
-                      />
-                    </div>
-                    <CardContent>
-                      <CardTitle className="text-sm">{product.name}</CardTitle>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          </ScrollArea>
-        </CardContent>
-      </Card>
+      {selectedCategory !== 'Advantages' ? (
+        <>
+          <Card>
+            <CardHeader>
+              <CardTitle>Product Gallery</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="w-full whitespace-nowrap">
+                <div className="flex animate-horizontal-scroll">
+                  {keyProducts.map(product => (
+                    <Link
+                      key={product.id}
+                      href={`/product/${product.id}`}
+                    >
+                      <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                        <div className="flex justify-center items-center h-32">
+                          <Image
+                            src={product.imageSrc}
+                            alt={product.name}
+                            width={200}
+                            height={150}
+                            className="rounded-md object-cover"
+                            style={{ maxWidth: '100%', maxHeight: '100%' }}
+                          />
+                        </div>
+                        <CardContent>
+                          <CardTitle className="text-sm">{product.name}</CardTitle>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Product List {selectedCategory !== "All" ? `(${selectedCategory})` : "(All)"}</CardTitle>
-        </CardHeader>
-        <CardContent className="grid gap-4">
-          {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-5 gap-4 p-4">
-              {filteredProducts.slice(0, 20).map(product => (
-                <Link
-                  key={product.id}
-                  href={`/product/${product.id}`}
-                >
-                  <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                    <div className="flex justify-center items-center h-32">
-                      <Image
-                        src={product.imageSrc}
-                        alt={product.name}
-                        width={200}
-                        height={150}
-                        className="rounded-md object-cover"
-                        style={{ maxWidth: '100%', maxHeight: '100%' }}
-                      />
-                    </div>
-                    <CardContent>
-                      <CardTitle className="text-sm">{product.name}</CardTitle>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p>No products found in this category.</p>
-          )}
-        </CardContent>
-      </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Product List {selectedCategory !== "All" ? `(${selectedCategory})` : "(All)"}</CardTitle>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+              {filteredProducts.length > 0 ? (
+                <div className="grid grid-cols-5 gap-4 p-4">
+                  {filteredProducts.slice(0, 20).map(product => (
+                    <Link
+                      key={product.id}
+                      href={`/product/${product.id}`}
+                    >
+                      <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                        <div className="flex justify-center items-center h-32">
+                          <Image
+                            src={product.imageSrc}
+                            alt={product.name}
+                            width={200}
+                            height={150}
+                            className="rounded-md object-cover"
+                            style={{ maxWidth: '100%', maxHeight: '100%' }}
+                          />
+                        </div>
+                        <CardContent>
+                          <CardTitle className="text-sm">{product.name}</CardTitle>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p>No products found in this category.</p>
+              )}
+            </CardContent>
+          </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Company Profile</CardTitle>
-          <CardDescription>About us</CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4">
-          <Image
-            src="https://picsum.photos/id/222/400/200"
-            alt="Company"
-            width={400}
-            height={200}
-            className="rounded-md object-cover"
-          />
-          <p>
-            We are a leading provider of innovative solutions... (truncated)
-          </p>
-        </CardContent>
-      </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Company Profile</CardTitle>
+              <CardDescription>About us</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+              <Image
+                src="https://picsum.photos/id/222/400/200"
+                alt="Company"
+                width={400}
+                height={200}
+                className="rounded-md object-cover"
+              />
+              <p>
+                We are a leading provider of innovative solutions... (truncated)
+              </p>
+            </CardContent>
+          </Card>
+        </>
+      ) : (
+        <div className="container mx-auto p-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Company Advantages</CardTitle>
+              <CardDescription>Our key advantages</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+              {companyAdvantages.map(advantage => (
+                <div key={advantage.id}>
+                  <CardTitle>{advantage.description}</CardTitle>
+                  <Image
+                    src={advantage.imageSrc}
+                    alt={advantage.description}
+                    width={400}
+                    height={200}
+                    className="rounded-md object-cover"
+                  />
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
 
 
