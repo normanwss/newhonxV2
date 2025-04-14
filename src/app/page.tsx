@@ -126,7 +126,7 @@ export default function Home() {
       {/* Toggle Button */}
       <Button
         onClick={() => setIsContactCardVisible(!isContactCardVisible)}
-        className="fixed bottom-4 right-4 z-50"
+        className="fixed top-1/2 transform -translate-y-1/2 right-4 z-50"
       >
         {isContactCardVisible ? 'Hide Contact' : 'Show Contact'}
       </Button>
@@ -358,10 +358,3 @@ function ContactCard({ contactInfo }: { contactInfo: { title: string; descriptio
     </Card>
   );
 }
-
-
-
-
-
-
-
