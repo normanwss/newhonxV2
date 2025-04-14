@@ -71,7 +71,7 @@ export default function Home() {
   const [isContactCardVisible, setIsContactCardVisible] = useState(true);
 
   return (
-    <div className="container mx-auto p-4 relative">
+    <div className="container mx-auto p-4 relative mb-16">
       {/* Company Name */}
       <h1 className="text-2xl font-bold mb-4 text-foreground bg-secondary text-secondary-foreground p-2 rounded-md">{companyName}</h1>
 
@@ -376,6 +376,7 @@ function ContactCard({ contactInfo, onClose }: { contactInfo: { title: string; d
     </Card>
   );
 }
+
 
 
 
