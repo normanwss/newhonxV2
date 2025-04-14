@@ -3,8 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import {useEffect, useRef, useState} from 'react';
-import 'primereact/resources/themes/lara-light-teal/theme.css';
-import 'primereact/resources/primereact.min.css';
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
 import {Input} from "@/components/ui/input";
@@ -305,4 +303,5 @@ export default function Home() {
     </div>
   );
 }
+
 
