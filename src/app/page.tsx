@@ -72,27 +72,28 @@ export default function Home() {
       {/* Product Category */}
       <div className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Product Categories</h2>
-        <Menubar>
+        <div className="flex">
           {productCategories.map((category) => (
-            <MenubarMenu key={category.name}>
-              <MenubarTrigger>{category.name}</MenubarTrigger>
-              <MenubarContent>
-                {category.subcategories && category.subcategories.length > 0 ? (
-                  <MenubarSub>
-                    <MenubarSubTrigger>{category.name} Subcategories</MenubarSubTrigger>
-                    <MenubarSubContent>
-                      {category.subcategories.map((subcategory) => (
-                        <MenubarItem key={subcategory}>{subcategory}</MenubarItem>
-                      ))}
-                    </MenubarSubContent>
-                  </MenubarSub>
-                ) : (
-                  <MenubarItem disabled>No Subcategories</MenubarItem>
-                )}
-              </MenubarContent>
-            </MenubarMenu>
+            <div key={category.name} className="relative group">
+              <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-accent hover:text-accent-foreground">
+                {category.name}
+              </button>
+              {category.subcategories && category.subcategories.length > 0 && (
+                <div className="absolute left-0 mt-2 py-2 w-48 bg-popover border border-border rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                  {category.subcategories.map((subcategory) => (
+                    <a
+                      key={subcategory}
+                      href="#"
+                      className="block px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground"
+                    >
+                      {subcategory}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
           ))}
-        </Menubar>
+        </div>
       </div>
 
       {/* Product Image Carousel */}
@@ -276,6 +277,3 @@ function SuccessStories({
     </div>
   );
 }
-
-
-    
