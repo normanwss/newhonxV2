@@ -189,13 +189,15 @@ export default function Home() {
         {filteredProducts.slice(0, 20).map(product => (
           <Link key={product.id} href={`/product/${product.id}`} passHref>
             <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-              <Image
-                src={product.imageSrc}
-                alt={product.name}
-                width={200}
-                height={150}
-                className="rounded-md object-cover"
-              />
+              <div className="flex justify-center items-center">
+                <Image
+                  src={product.imageSrc}
+                  alt={product.name}
+                  width={200}
+                  height={150}
+                  className="rounded-md object-cover"
+                />
+              </div>
               <CardContent>
                 <CardTitle className="text-sm">{product.name}</CardTitle>
               </CardContent>
@@ -255,13 +257,15 @@ export default function Home() {
           {successStories.slice(0, 15).map((story, index) => (
             <Link key={index} href={`/success-story/${index}`} passHref>
               <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                <Image
-                  src={story.imageSrc}
-                  alt={story.caseName}
-                  width={200}
-                  height={150}
-                  className="rounded-md object-cover"
-                />
+                <div className="flex justify-center items-center">
+                  <Image
+                    src={story.imageSrc}
+                    alt={story.caseName}
+                    width={200}
+                    height={150}
+                    className="rounded-md object-cover"
+                  />
+                </div>
                 <CardContent>
                   <CardTitle className="text-sm">{story.caseName}</CardTitle>
                 </CardContent>
