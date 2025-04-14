@@ -160,27 +160,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Company Profile */}
-      <Card className="h-48 overflow-hidden mt-4">
-        <CardHeader>
-          <CardTitle>Company Profile</CardTitle>
-        </CardHeader>
-        <CardContent className="flex items-center">
-          <Image
-            src={companyProfile.imageSrc}
-            alt="Company"
-            width={100}
-            height={75}
-            className="mr-4 rounded-md"
-          />
-          <CardDescription>
-            {companyProfile.description.length > 150
-              ? `${companyProfile.description.substring(0, 150)}...`
-              : companyProfile.description}
-          </CardDescription>
-        </CardContent>
-      </Card>
-
       {/* Search Box */}
       <div className="p-4">
         <Input
@@ -211,6 +190,27 @@ export default function Home() {
           </Link>
         ))}
       </div>
+      
+      {/* Company Profile */}
+      <Card className="h-48 overflow-hidden mt-4">
+        <CardHeader>
+          <CardTitle>Company Profile</CardTitle>
+        </CardHeader>
+        <CardContent className="flex items-center">
+          <Image
+            src={companyProfile.imageSrc}
+            alt="Company"
+            width={100}
+            height={75}
+            className="mr-4 rounded-md"
+          />
+          <CardDescription>
+            {companyProfile.description.length > 150
+              ? `${companyProfile.description.substring(0, 150)}...`
+              : companyProfile.description}
+          </CardDescription>
+        </CardContent>
+      </Card>
 
       {/* Company Advantages */}
       <div className="overflow-hidden mt-4">
@@ -303,5 +303,3 @@ export default function Home() {
     </div>
   );
 }
-
-
