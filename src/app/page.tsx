@@ -65,6 +65,8 @@ const contactInfo = {
   address: '123 Main St, Anytown USA',
 };
 
+const keyProducts = products.slice(0, 5);
+
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -84,7 +86,6 @@ export default function Home() {
 
   const handleCategoryClick = (categoryName: string) => {
     setSelectedCategory(categoryName);
-    setIsContactCardVisible(true)
   };
 
   return (
@@ -132,6 +133,40 @@ export default function Home() {
           </MenubarMenu>
         ))}
       </Menubar>
+
+      <Card>
+        <CardHeader>
+            <CardTitle>Product Gallery</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="w-full whitespace-nowrap">
+            <div className="flex animate-horizontal-scroll">
+              {keyProducts.map(product => (
+                <Link
+                  key={product.id}
+                  href={`/product/${product.id}`}
+                >
+                  <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                    <div className="flex justify-center items-center h-32">
+                      <Image
+                        src={product.imageSrc}
+                        alt={product.name}
+                        width={200}
+                        height={150}
+                        className="rounded-md object-cover"
+                        style={{ maxWidth: '100%', maxHeight: '100%' }}
+                      />
+                    </div>
+                    <CardContent>
+                      <CardTitle className="text-sm">{product.name}</CardTitle>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </ScrollArea>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
