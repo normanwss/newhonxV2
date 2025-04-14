@@ -142,19 +142,35 @@ export default function Home() {
         {/* Product Category Menu */}
         <div className="flex flex-wrap justify-start gap-2 p-2">
           {productCategories.map(category => (
-              <button
-                  key={category.name}
-                  className={cn(
-                      'rounded-md border p-2',
-                      selectedCategory === category.name
-                          ? 'bg-accent text-accent-foreground'
-                          : 'hover:bg-accent hover:text-accent-foreground'
-                  )}
-                  onClick={() => setSelectedCategory(category.name)}
-              >
-                {category.name}
-                {category.subcategories.length > 0 && ' ▾'}
-              </button>
+              category.subcategories.length > 0 ? (
+                  <DropdownMenu key={category.name}>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" className="rounded-md border p-2 hover:bg-accent hover:text-accent-foreground">
+                        {category.name} ▾
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56">
+                      {category.subcategories.map(subcategory => (
+                          <DropdownMenuItem key={subcategory} onClick={() => setSelectedCategory(subcategory)}>
+                            {subcategory}
+                          </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+              ) : (
+                  <button
+                      key={category.name}
+                      className={cn(
+                          'rounded-md border p-2',
+                          selectedCategory === category.name
+                              ? 'bg-accent text-accent-foreground'
+                              : 'hover:bg-accent hover:text-accent-foreground'
+                      )}
+                      onClick={() => setSelectedCategory(category.name)}
+                  >
+                    {category.name}
+                  </button>
+              )
           ))}
         </div>
 
