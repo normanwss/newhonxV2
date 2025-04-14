@@ -3,74 +3,65 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import {useEffect, useRef, useState} from 'react';
-import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
-import {Input} from "@/components/ui/input";
-import {cn} from "@/lib/utils";
+import {Icons} from '@/components/icons';
+import {cn} from '@/lib/utils';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {Input} from '@/components/ui/input';
 
 // Placeholder data (replace with your actual data)
 const companyName = 'Acme Corp';
 const productCategories = [
   {
-    label: 'All',
-    items: null,
+    name: 'All',
+    subcategories: [],
   },
   {
-    label: 'Category 1',
-    items: [
-      [
-        {
-          label: 'Subcategory 1-1',
-          url: '#',
-        },
-        {
-          label: 'Subcategory 1-2',
-          url: '#',
-        },
-      ],
-    ],
+    name: 'Category 1',
+    subcategories: ['Subcategory 1.1', 'Subcategory 1.2'],
   },
   {
-    label: 'Category 2',
-    items: [
-      [
-        {
-          label: 'Subcategory 2-1',
-          url: '#',
-        },
-        {
-          label: 'Subcategory 2-2',
-          url: '#',
-        },
-      ],
-    ],
+    name: 'Category 2',
+    subcategories: ['Subcategory 2.1', 'Subcategory 2.2', 'Subcategory 2.3'],
   },
   {
-    label: 'Category 3',
-    items: null,
+    name: 'Category 3',
+    subcategories: [],
+  },
+  {
+    name: 'Category 4',
+    subcategories: ['Subcategory 4.1'],
   },
 ];
 
-const products = Array.from({length: 20}, (_, i) => ({
+const products = Array.from({length: 30}, (_, i) => ({
   id: i,
   name: `Product ${i + 1}`,
-  imageSrc: `https://picsum.photos/id/${i + 30}/200/150`,
-  description: `This is a short description of Product ${i + 1}.`,
-  category: `Category ${Math.floor(i / 5) + 1}`, // Assign categories for filtering
+  category:
+    productCategories[Math.floor(i % productCategories.length)].name,
+  imageSrc: `https://picsum.photos/id/${i + 10}/200/150`,
 }));
 
 const companyProfile = {
   imageSrc: 'https://picsum.photos/id/90/200/150',
   description:
-    'Acme Corp is a leading provider of innovative solutions. Our mission is to deliver exceptional value to our customers through cutting-edge technology and unparalleled service.',
+    'Acme Corp is a leading provider of innovative solutions. ' +
+    'With a commitment to excellence and customer satisfaction, ' +
+    'we strive to deliver exceptional value and results.',
 };
 
 const companyAdvantages = Array.from({length: 5}, (_, i) => ({
+  id: i,
   imageSrc: `https://picsum.photos/id/${i + 40}/300/100`,
-  altText: `Advantage ${i + 1}`,
 }));
 
 const successStories = Array.from({length: 15}, (_, i) => ({
+  id: i,
   caseName: `Success Story ${i + 1}`,
   imageSrc: `https://picsum.photos/id/${i + 70}/200/150`,
 }));
@@ -78,257 +69,267 @@ const successStories = Array.from({length: 15}, (_, i) => ({
 const contactInfo = {
   title: 'Contact Us',
   qrCodeImage: 'https://www.primefaces.org/primereact/showcase/demo/images/qr-code.png',
-  address: '123 Main Street, Anytown USA',
-  phone: '555-123-4567',
+  phoneNumber: '123-456-7890',
+  address: '123 Main St, Anytown, USA',
   email: 'info@example.com',
 };
 
 export default function Home() {
-  const [isContactCardVisible, setIsContactCardVisible] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [isGalleryHovered, setIsGalleryHovered] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isContactCardVisible, setIsContactCardVisible] = useState(false);
+  const [filteredProducts, setFilteredProducts] = useState(products);
 
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (selectedCategory === 'All' || product.category === selectedCategory)
-  );
+  useEffect(() => {
+    let initialProducts = products;
 
-  const galleryAnimationClass = isGalleryHovered ? '' : 'animate-horizontal-scroll';
+    if (selectedCategory !== 'All') {
+      initialProducts = products.filter(
+          product => product.category === selectedCategory
+      );
+    }
+
+    if (searchQuery) {
+      initialProducts = initialProducts.filter(product =>
+          product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setFilteredProducts(initialProducts);
+  }, [selectedCategory, searchQuery]);
+
+  const productCarouselRef = useRef<HTMLDivElement>(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    const scroll = () => {
+      if (isPaused) return;
+      if (productCarouselRef.current) {
+        productCarouselRef.current.scrollLeft += 1;
+        if (
+          productCarouselRef.current.scrollLeft >=
+          productCarouselRef.current.scrollWidth -
+          productCarouselRef.current.clientWidth
+        ) {
+          productCarouselRef.current.scrollLeft = 0;
+        }
+      }
+    };
+
+    const intervalId = setInterval(scroll, 20); // Adjust speed as needed
+
+    return () => clearInterval(intervalId);
+  }, [isPaused]);
+
+  const toggleContactCardVisibility = () => {
+    setIsContactCardVisible(!isContactCardVisible);
+  };
 
   return (
-    <div className="min-h-screen relative">
+      <div className="flex flex-col min-h-screen">
+        {/* Company Name */}
+        <div className="bg-secondary p-4 text-center text-lg font-bold">
+          {companyName}
+        </div>
 
-      {/* Company Name */}
-      <div className="bg-secondary p-4 text-center text-lg font-semibold">
-        {companyName}
-      </div>
-
-      {/* Product Category Menu */}
-      <div className="relative bg-secondary">
-        <ul className="flex space-x-4 p-4">
+        {/* Product Category Menu */}
+        <div className="flex flex-wrap justify-center gap-2 p-2">
           {productCategories.map(category => (
-            <li key={category.label} className="relative">
-              <Link
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setSelectedCategory(category.label);
-                }}
-                className={cn(
-                  "block py-2 px-4 hover:bg-accent hover:text-accent-foreground rounded-md",
-                  selectedCategory === category.label ? "bg-primary text-primary-foreground" : ""
-                )}
+              <button
+                  key={category.name}
+                  className={cn(
+                      'rounded-md border p-2',
+                      selectedCategory === category.name
+                          ? 'bg-accent text-accent-foreground'
+                          : 'hover:bg-accent hover:text-accent-foreground'
+                  )}
+                  onClick={() => setSelectedCategory(category.name)}
               >
-                {category.label}
-                {category.items && <>&nbsp;&#9662;</>}
-              </Link>
-              {category.items && (
-                <ul className="absolute left-0 mt-2 py-2 w-48 bg-white border rounded shadow-md z-10 hidden group-hover:block">
-                  {category.items.map((subCategoryGroup, index) => (
-                    <li key={index}>
-                      <ul>
-                        {subCategoryGroup.map(subCategory => (
-                          <li key={subCategory.label}>
-                            <Link
-                              href="#"
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setSelectedCategory(subCategory.label);
-                              }}
-                              className="block py-2 px-4 hover:bg-accent hover:text-accent-foreground"
-                            >
-                              {subCategory.label}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Product Image Carousel */}
-      <div
-        className="overflow-hidden"
-        onMouseEnter={() => setIsGalleryHovered(true)}
-        onMouseLeave={() => setIsGalleryHovered(false)}
-      >
-        <div className={`flex ${isGalleryHovered ? '' : 'animate-horizontal-scroll'}`}>
-          {products.slice(0, 10).map(product => (
-            <Link key={product.id} href={`/product/${product.id}`} passHref>
-              <Image
-                src={product.imageSrc}
-                alt={product.name}
-                width={200}
-                height={150}
-                className="mr-4 rounded-md cursor-pointer"
-              />
-            </Link>
+                {category.name}
+                {category.subcategories.length > 0 && ' ▾'}
+              </button>
           ))}
         </div>
-      </div>
 
-      {/* Search Box */}
-      <div className="p-4">
-        <Input
-          type="text"
-          placeholder="Search products..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full"
-        />
-      </div>
-
-      {/* Product Center */}
-      <div className="grid grid-cols-5 gap-4 p-4">
-        {filteredProducts.slice(0, 20).map(product => (
-          <Link key={product.id} href={`/product/${product.id}`} passHref>
-            <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-              <div className="flex justify-center items-center">
-                <Image
-                  src={product.imageSrc}
-                  alt={product.name}
-                  width={200}
-                  height={150}
-                  className="rounded-md object-cover"
-                />
-              </div>
-              <CardContent>
-                <CardTitle className="text-sm">{product.name}</CardTitle>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
-      </div>
-
-      {/* Company Profile */}
-      <Card className="h-48 overflow-hidden mt-4">
-        <CardHeader>
-          <CardTitle>Company Profile</CardTitle>
-        </CardHeader>
-        <CardContent className="flex items-center">
-          <Image
-            src={companyProfile.imageSrc}
-            alt="Company"
-            width={100}
-            height={75}
-            className="mr-4 rounded-md"
+        {/* Search Box */}
+        <div className="p-4">
+          <Input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
           />
-          <CardDescription>
-            {companyProfile.description.length > 150
-              ? `${companyProfile.description.substring(0, 150)}...`
-              : companyProfile.description}
-          </CardDescription>
-        </CardContent>
-      </Card>
-      
-      {/* Company Advantages */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Company Advantages</CardTitle>
-        </CardHeader>
-        <div className="overflow-hidden mt-4">
-          <div className="flex animate-horizontal-scroll">
-            {companyAdvantages.map((advantage, index) => (
+        </div>
+
+        {/* Product Image Carousel */}
+        <div
+            className="overflow-hidden whitespace-nowrap p-4 relative"
+            ref={productCarouselRef}
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+        >
+          {filteredProducts.slice(0, 10).map(product => (
+              <Link
+                  key={product.id}
+                  href={`/product/${product.id}`}
+                  passHref
+                  className="inline-block transition-transform duration-200 hover:scale-105"
+              >
+                <Image
+                    src={product.imageSrc}
+                    alt={product.name}
+                    width={200}
+                    height={150}
+                    className="rounded-md object-cover inline-block"
+                />
+              </Link>
+          ))}
+        </div>
+
+        {/* Product Center */}
+        <div className="grid grid-cols-5 gap-4 p-4">
+          {filteredProducts.slice(0, 20).map(product => (
+              <Link key={product.id} href={`/product/${product.id}`} passHref>
+                <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                  <div className="flex justify-center items-center h-32">
+                    <Image
+                        src={product.imageSrc}
+                        alt={product.name}
+                        width={200}
+                        height={150}
+                        className="rounded-md object-cover"
+                    />
+                  </div>
+                  <CardContent>
+                    <CardTitle className="text-sm">{product.name}</CardTitle>
+                  </CardContent>
+                </Card>
+              </Link>
+          ))}
+        </div>
+
+        {/* Company Profile */}
+        <div className="p-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Company Profile</CardTitle>
+              <CardDescription>Learn more about us</CardDescription>
+            </CardHeader>
+            <CardContent className="flex items-center">
               <Image
-                key={index}
-                src={advantage.imageSrc}
-                alt={advantage.altText}
-                width={300}
-                height={100}
-                className="mr-4 rounded-md"
+                  src={companyProfile.imageSrc}
+                  alt="Company"
+                  width={150}
+                  height={100}
+                  className="rounded-md object-cover mr-4"
               />
+              <p className="h-24 overflow-hidden text-sm">
+                {companyProfile.description}
+                {companyProfile.description.length > 100 ? '...' : ''}
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Company Advantages */}
+        <div className="p-4">
+          <h2>Company Advantages</h2>
+          <div className="overflow-x-auto whitespace-nowrap">
+            {companyAdvantages.map(advantage => (
+                <Image
+                    key={advantage.id}
+                    src={advantage.imageSrc}
+                    alt={`Advantage ${advantage.id}`}
+                    width={300}
+                    height={100}
+                    className="rounded-md object-cover inline-block mr-4"
+                />
             ))}
           </div>
         </div>
-      </Card>
 
-      {/* Success Stories */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Success Stories</CardTitle>
-        </CardHeader>
-        <div className="grid grid-cols-5 gap-4 p-4">
-          {successStories.slice(0, 15).map((story, index) => (
-            <Link key={index} href={`/success-story/${index}`} passHref>
-              <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                <div className="flex justify-center items-center">
-                  <Image
-                    src={story.imageSrc}
-                    alt={story.caseName}
-                    width={200}
-                    height={150}
-                    className="rounded-md object-cover"
-                  />
-                </div>
-                <CardContent>
-                  <CardTitle className="text-sm">{story.caseName}</CardTitle>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      </Card>
-
-      {/* Contact Information Card */}
-      {isContactCardVisible && (
-        <div
-          className="fixed top-1/2 transform -translate-y-1/2 right-4 z-50 w-80 bg-white rounded-md shadow-lg p-4"
-          style={{maxHeight: '80vh', overflowY: 'auto'}}
-        >
-          <div className="flex justify-end">
-            <Button variant="ghost" size="icon" onClick={() => setIsContactCardVisible(false)}>
-              Hide
-            </Button>
+        {/* Success Stories */}
+        <div className="p-4">
+          <h2>Success Stories</h2>
+          <div className="grid grid-cols-3 gap-4">
+            {successStories.slice(0, 15).map(story => (
+                <Link key={story.id} href={`/success-story/${story.id}`}
+                      passHref>
+                  <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                    <div className="flex justify-center items-center h-32">
+                      <Image
+                          src={story.imageSrc}
+                          alt={story.caseName}
+                          width={200}
+                          height={150}
+                          className="rounded-md object-cover"
+                      />
+                    </div>
+                    <CardContent>
+                      <CardTitle className="text-sm">{story.caseName}</CardTitle>
+                    </CardContent>
+                  </Card>
+                </Link>
+            ))}
           </div>
-          <CardTitle>{contactInfo.title}</CardTitle>
-          <CardContent>
-            <Image
-              src={contactInfo.qrCodeImage}
-              alt="QR Code"
-              width={100}
-              height={100}
-              className="mx-auto mb-2"
-            />
-            <CardDescription>Address: {contactInfo.address}</CardDescription>
-            <CardDescription>Phone: {contactInfo.phone}</CardDescription>
-            <CardDescription>Email: {contactInfo.email}</CardDescription>
-          </CardContent>
         </div>
-      )}
 
-      {/* Toggle Button */}
-      {!isContactCardVisible && (
-        <Button
-          onClick={() => setIsContactCardVisible(true)}
-          className="fixed top-1/2 transform -translate-y-1/2 right-4 z-50"
-        >
-          Contact Us
-        </Button>
-      )}
+        {/* Contact Information Card */}
+        {isContactCardVisible && (
+            <div
+                className="fixed top-1/2 right-4 transform -translate-y-1/2 bg-card border rounded-md shadow-lg p-4 w-80 z-50 overflow-auto"
+                style={{maxHeight: '80vh'}}>
+              <div className="flex justify-end">
+                <button
+                    onClick={toggleContactCardVisibility}
+                    className="text-gray-600 hover:text-gray-800 focus:outline-none"
+                >
+                  <Icons.close className="h-5 w-5"/>
+                </button>
+              </div>
+              <CardTitle>{contactInfo.title}</CardTitle>
+              <CardContent>
+                <Image
+                    src={contactInfo.qrCodeImage}
+                    alt="QR Code"
+                    width={100}
+                    height={100}
+                    className="rounded-md object-cover mb-4"
+                />
+                <CardDescription>
+                  Phone: {contactInfo.phoneNumber}
+                  <br/>
+                  Address: {contactInfo.address}
+                  <br/>
+                  Email: {contactInfo.email}
+                </CardDescription>
+              </CardContent>
+            </div>
+        )}
 
-      {/* Bottom Menu */}
-      <div
-        className="fixed bottom-0 left-0 w-full bg-white flex justify-around items-center p-4 border-t border-gray-200 mt-4"
-      >
-        <Link href="#" className="hover:bg-gray-100 p-2 rounded">
-          About Us
-        </Link>
-        <Link href="#" className="hover:bg-gray-100 p-2 rounded">
-          Products
-        </Link>
-        <Link href="#" className="hover:bg-gray-100 p-2 rounded">
-          Services
-        </Link>
-        <Link href="#" className="hover:bg-gray-100 p-2 rounded">
-          Contact
-        </Link>
+        {/* Toggle Button */}
+        {!isContactCardVisible && (
+            <button
+                onClick={toggleContactCardVisibility}
+                className="fixed top-1/2 right-4 transform -translate-y-1/2 bg-accent text-accent-foreground rounded-md shadow-lg p-2 z-50"
+            >
+              Contact Us
+            </button>
+        )}
+
+        {/* Bottom Menu */}
+        <div className="bg-white p-4 text-center fixed bottom-0 left-0 w-full mt-4">
+          <p>
+            © 2024 Acme Corp |{' '}
+            <a href="#" className="hover:bg-teal-200 p-2 rounded-md">
+              Privacy Policy
+            </a>{' '}
+            |{' '}
+            <a href="#" className="hover:bg-teal-200 p-2 rounded-md">
+              Terms of Service
+            </a>
+          </p>
+        </div>
       </div>
-    </div>
   );
 }
