@@ -43,10 +43,6 @@ const productCategories = [
     name: 'Advantages',
     subcategories: [],
   },
-  {
-    name: 'Contact Us',
-    subcategories: [],
-  },
 ];
 
 const products = Array.from({ length: 30 }, (_, i) => ({
@@ -104,10 +100,6 @@ export default function Home() {
     setSelectedCategory('Advantages');
   };
 
-  const handleContactUsCategoryClick = () => {
-    setSelectedCategory('Contact Us');
-  };
-
   return (
     <>
       <div className="flex items-center justify-between p-4 bg-secondary rounded-md shadow-md">
@@ -141,9 +133,7 @@ export default function Home() {
               onClick={
                 category.name === 'Advantages'
                   ? handleAdvantageCategoryClick
-                  : category.name === 'Contact Us'
-                    ? handleContactUsCategoryClick
-                    : () => handleCategoryClick(category.name)
+                  : () => handleCategoryClick(category.name)
               }
               className={selectedCategory === category.name ? 'bg-accent text-accent-foreground rounded-md' : 'rounded-md'}
             >
@@ -163,7 +153,7 @@ export default function Home() {
         ))}
       </Menubar>
 
-      {selectedCategory !== 'Advantages' && selectedCategory !== 'Contact Us' ? (
+      {selectedCategory !== 'Advantages' ? (
         <>
           <Card>
             <CardHeader>
@@ -254,7 +244,7 @@ export default function Home() {
             </CardContent>
           </Card>
         </>
-      ) : selectedCategory === 'Advantages' ? (
+      ) : (
         <div className="container mx-auto p-4">
           <Card>
             <CardHeader>
@@ -276,28 +266,6 @@ export default function Home() {
               ))}
             </CardContent>
           </Card>
-        </div>
-      ) : (
-        <div className="fixed top-1/2 right-4 transform -translate-y-1/2 bg-white border rounded-md shadow-lg p-4 w-80 z-50">
-          <button
-            className="absolute top-2 right-2 px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-            onClick={toggleContactCardVisibility}
-          >
-            Hide
-          </button>
-          <CardTitle>{contactInfo.title}</CardTitle>
-          <CardContent>
-            <Image
-              src={contactInfo.qrCodeImage}
-              alt="QR Code"
-              width={100}
-              height={100}
-              className="rounded-md"
-            />
-            <CardDescription>Phone: {contactInfo.phoneNumber}</CardDescription>
-            <CardDescription>Email: {contactInfo.email}</CardDescription>
-            <CardDescription>Address: {contactInfo.address}</CardDescription>
-          </CardContent>
         </div>
       )}
 
