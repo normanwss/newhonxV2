@@ -186,29 +186,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Company Profile */}
-        <div className="p-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Company Profile</CardTitle>
-              <CardDescription>Learn more about us</CardDescription>
-            </CardHeader>
-            <CardContent className="flex items-center">
-              <Image
-                  src={companyProfile.imageSrc}
-                  alt="Company"
-                  width={150}
-                  height={100}
-                  className="rounded-md object-cover mr-4"
-              />
-              <p className="h-24 overflow-hidden text-sm">
-                {companyProfile.description}
-                {companyProfile.description.length > 100 ? '...' : ''}
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Product Center */}
         <div className="grid grid-cols-5 gap-4 p-4">
           {filteredProducts.slice(0, 20).map(product => (
@@ -230,6 +207,29 @@ export default function Home() {
                 </Card>
               </Link>
           ))}
+        </div>
+
+        {/* Company Profile */}
+        <div className="p-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Company Profile</CardTitle>
+              <CardDescription>Learn more about us</CardDescription>
+            </CardHeader>
+            <CardContent className="flex items-center">
+              <Image
+                  src={companyProfile.imageSrc}
+                  alt="Company"
+                  width={150}
+                  height={100}
+                  className="rounded-md object-cover mr-4"
+              />
+              <p className="h-24 overflow-hidden text-sm">
+                {companyProfile.description}
+                {companyProfile.description.length > 100 ? '...' : ''}
+              </p>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Company Advantages */}
