@@ -114,16 +114,8 @@ export default function Home() {
     setSelectedCategory(categoryName);
   };
 
-  const handleAdvantageCategoryClick = () => {
-    setSelectedCategory('Advantages');
-  };
-
-  const handleSuccessStoriesCategoryClick = () => {
-    setSelectedCategory('Success Stories');
-  };
-
-  const handleContactUsCategoryClick = () => {
-    setSelectedCategory('Contact Us');
+  const isCategoryActive = (categoryName: string) => {
+    return selectedCategory === categoryName;
   };
 
   return (
@@ -163,15 +155,7 @@ export default function Home() {
               setIsSubMenuOpen(false);
             }}>
             <MenubarTrigger
-              onClick={
-                category.name === 'Advantages'
-                  ? handleAdvantageCategoryClick
-                  : category.name === 'Success Stories'
-                    ? handleSuccessStoriesCategoryClick
-                    : category.name === 'Contact Us'
-                      ? handleContactUsCategoryClick
-                      : () => handleCategoryClick(category.name)
-              }
+              onClick={() => handleCategoryClick(category.name)}
               className={
                 selectedCategory === category.name
                   ? 'bg-accent text-accent-foreground rounded-md'
@@ -199,7 +183,7 @@ export default function Home() {
         ))}
       </Menubar>
 
-      {selectedCategory !== 'Advantages' && selectedCategory !== 'Success Stories' && selectedCategory !== 'Contact Us' ? (
+      {selectedCategory === 'All' || selectedCategory === 'Category 1' || selectedCategory === 'Category 2' || selectedCategory === 'Category 3' || selectedCategory === 'Category 4' ? (
         <>
           <Card>
             <CardHeader>
@@ -354,59 +338,63 @@ export default function Home() {
         </div>
       ) : null}
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Company Advantages</CardTitle>
-        </CardHeader>
-        <CardContent className="flex gap-4 p-4">
-          {companyAdvantages.map(advantage => (
-            <Link key={advantage.id} href={`/advantage/${advantage.id}`}>
-              <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                <div className="flex justify-center items-center h-32">
-                  <Image
-                    src={advantage.imageSrc}
-                    alt={advantage.description}
-                    width={200}
-                    height={150}
-                    className="rounded-md object-cover"
-                    style={{maxWidth: '100%', maxHeight: '100%'}}
-                  />
-                </div>
-                <CardContent>
-                  <CardTitle className="text-sm">{advantage.description}</CardTitle>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </CardContent>
-      </Card>
+      {selectedCategory === 'All' || selectedCategory === 'Advantages' ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Company Advantages</CardTitle>
+          </CardHeader>
+          <CardContent className="flex gap-4 p-4">
+            {companyAdvantages.map(advantage => (
+              <Link key={advantage.id} href={`/advantage/${advantage.id}`}>
+                <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                  <div className="flex justify-center items-center h-32">
+                    <Image
+                      src={advantage.imageSrc}
+                      alt={advantage.description}
+                      width={200}
+                      height={150}
+                      className="rounded-md object-cover"
+                      style={{maxWidth: '100%', maxHeight: '100%'}}
+                    />
+                  </div>
+                  <CardContent>
+                    <CardTitle className="text-sm">{advantage.description}</CardTitle>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </CardContent>
+        </Card>
+      ) : null}
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Success Stories</CardTitle>
-        </CardHeader>
-        <CardContent className="grid grid-cols-3 gap-4">
-          {successStories.slice(0, 15).map(story => (
-            <Link key={story.id} href={`/success-story/${story.id}`}>
-              <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                <div className="flex justify-center items-center h-32">
-                  <Image
-                    src={story.imageSrc}
-                    alt={story.caseName}
-                    width={200}
-                    height={150}
-                    className="rounded-md object-cover"
-                    style={{maxWidth: '100%', maxHeight: '100%'}}
-                  />
-                </div>
-                <CardContent>
-                  <CardTitle className="text-sm">{story.caseName}</CardTitle>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </CardContent>
-      </Card>
+      {selectedCategory === 'All' || selectedCategory === 'Success Stories' ? (
+        <Card>
+          <CardHeader>
+            <CardTitle>Success Stories</CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-3 gap-4">
+            {successStories.slice(0, 15).map(story => (
+              <Link key={story.id} href={`/success-story/${story.id}`}>
+                <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                  <div className="flex justify-center items-center h-32">
+                    <Image
+                      src={story.imageSrc}
+                      alt={story.caseName}
+                      width={200}
+                      height={150}
+                      className="rounded-md object-cover"
+                      style={{maxWidth: '100%', maxHeight: '100%'}}
+                    />
+                  </div>
+                  <CardContent>
+                    <CardTitle className="text-sm">{story.caseName}</CardTitle>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </CardContent>
+        </Card>
+      ) : null}
 
       {!isContactCardVisible && (
         <button
