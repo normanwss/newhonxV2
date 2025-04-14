@@ -107,7 +107,7 @@ export default function Home() {
   });
 
   const toggleContactCardVisibility = () => {
-    setIsContactCardVisible(!isContactCardVisible);
+    setIsContactCardVisible(prev => !prev);
   };
 
   const handleCategoryClick = (categoryName: string) => {
@@ -406,6 +406,34 @@ export default function Home() {
           onClick={toggleContactCardVisibility}>
           Contact Us
         </button>
+      )}
+
+      {isContactCardVisible && (
+        <Card className="fixed top-1/2 right-4 transform -translate-y-1/2 z-50 w-80 p-4 bg-white rounded-md shadow-md">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              {contactInfo.title}
+              <button onClick={toggleContactCardVisibility} className="p-1 rounded-full hover:bg-gray-200">
+                {/* Icon for closing the contact card */}
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                  <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
+                </svg>
+              </button>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Image
+              src={contactInfo.qrCodeImage}
+              alt="QR Code"
+              width={100}
+              height={100}
+              className="rounded-md"
+            />
+            <CardDescription>Phone: {contactInfo.phoneNumber}</CardDescription>
+            <CardDescription>Email: {contactInfo.email}</CardDescription>
+            <CardDescription>Address: {contactInfo.address}</CardDescription>
+          </CardContent>
+        </Card>
       )}
 
       <footer className="fixed bottom-0 left-0 w-full bg-white p-4 border-t border-border z-50">
