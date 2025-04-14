@@ -153,14 +153,15 @@ export default function Home() {
       <div className="overflow-hidden">
         <div className="flex animate-horizontal-scroll">
           {products.slice(0, 10).map(product => (
-            <Image
-              key={product.id}
-              src={product.imageSrc}
-              alt={product.name}
-              width={200}
-              height={150}
-              className="mr-4 rounded-md"
-            />
+            <Link key={product.id} href={`/product/${product.id}`} passHref>
+              <Image
+                src={product.imageSrc}
+                alt={product.name}
+                width={200}
+                height={150}
+                className="mr-4 rounded-md cursor-pointer"
+              />
+            </Link>
           ))}
         </div>
       </div>
