@@ -40,7 +40,7 @@ interface Props {
 }
 
 export default function ProductDetailPage({ params }: Props) {
-  const productId = parseInt(params.id);
+  const productId = parseInt(React.use(Promise.resolve(params)).id);
   const product = products.find((product) => product.id === productId);
 
   if (!product) {
@@ -70,4 +70,5 @@ export default function ProductDetailPage({ params }: Props) {
     </div>
   );
 }
+
 
