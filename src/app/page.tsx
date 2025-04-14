@@ -13,6 +13,13 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {Input} from '@/components/ui/input';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import {Button} from "@/components/ui/button";
 
 // Placeholder data (replace with your actual data)
 const companyName = 'Acme Corp';
@@ -172,7 +179,6 @@ export default function Home() {
               <Link
                   key={product.id}
                   href={`/product/${product.id}`}
-                  passHref
                   className="inline-block transition-transform duration-200 hover:scale-105"
               >
                 <Image
@@ -187,26 +193,31 @@ export default function Home() {
         </div>
 
         {/* Product Center */}
-        <div className="grid grid-cols-5 gap-4 p-4">
-          {filteredProducts.slice(0, 20).map(product => (
-              <Link key={product.id} href={`/product/${product.id}`} passHref>
-                <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                  <div className="flex justify-center items-center h-32">
-                    <Image
-                        src={product.imageSrc}
-                        alt={product.name}
-                        width={200}
-                        height={150}
-                        className="rounded-md object-cover"
-                        style={{maxWidth: '100%', maxHeight: '100%'}}
-                    />
-                  </div>
-                  <CardContent>
-                    <CardTitle className="text-sm">{product.name}</CardTitle>
-                  </CardContent>
-                </Card>
-              </Link>
-          ))}
+        <div className="p-4">
+          <h2 className="text-lg font-semibold mb-2">
+            {selectedCategory === 'All' ? 'All Products' : selectedCategory}
+          </h2>
+          <div className="grid grid-cols-5 gap-4">
+            {filteredProducts.slice(0, 20).map(product => (
+                <Link key={product.id} href={`/product/${product.id}`}>
+                  <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                    <div className="flex justify-center items-center h-32">
+                      <Image
+                          src={product.imageSrc}
+                          alt={product.name}
+                          width={200}
+                          height={150}
+                          className="rounded-md object-cover"
+                          style={{maxWidth: '100%', maxHeight: '100%'}}
+                      />
+                    </div>
+                    <CardContent>
+                      <CardTitle className="text-sm">{product.name}</CardTitle>
+                    </CardContent>
+                  </Card>
+                </Link>
+            ))}
+          </div>
         </div>
 
         {/* Company Profile */}
@@ -254,8 +265,7 @@ export default function Home() {
           <h2>Success Stories</h2>
           <div className="grid grid-cols-3 gap-4">
             {successStories.slice(0, 15).map(story => (
-                <Link key={story.id} href={`/success-story/${story.id}`}
-                      passHref>
+                <Link key={story.id} href={`/success-story/${story.id}`}>
                   <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
                     <div className="flex justify-center items-center h-32">
                       <Image
