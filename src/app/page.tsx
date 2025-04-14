@@ -12,6 +12,10 @@ import {cn} from "@/lib/utils";
 const companyName = 'Acme Corp';
 const productCategories = [
   {
+    label: 'All',
+    items: null,
+  },
+  {
     label: 'Category 1',
     items: [
       [
@@ -52,6 +56,7 @@ const products = Array.from({length: 20}, (_, i) => ({
   name: `Product ${i + 1}`,
   imageSrc: `https://picsum.photos/id/${i + 30}/200/150`,
   description: `This is a short description of Product ${i + 1}.`,
+  category: `Category ${Math.floor(i / 5) + 1}`, // Assign categories for filtering
 }));
 
 const companyProfile = {
@@ -81,11 +86,11 @@ const contactInfo = {
 export default function Home() {
   const [isContactCardVisible, setIsContactCardVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('All');
 
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (!selectedCategory || product.name.startsWith(selectedCategory))
+    (selectedCategory === 'All' || product.category === selectedCategory)
   );
 
   return (
