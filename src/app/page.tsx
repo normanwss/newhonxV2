@@ -183,218 +183,220 @@ export default function Home() {
         ))}
       </Menubar>
 
-      {selectedCategory === 'All' || selectedCategory === 'Category 1' || selectedCategory === 'Category 2' || selectedCategory === 'Category 3' || selectedCategory === 'Category 4' ? (
-        <>
-          <Card>
-            <CardHeader>
-              <CardTitle>Product Gallery</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ScrollArea className="w-full whitespace-nowrap">
-                <div className="flex animate-horizontal-scroll">
-                  {keyProducts.map(product => (
-                    <Link key={product.id} href={`/product/${product.id}`}>
-                      <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                        <div className="flex justify-center items-center h-32">
-                          <Image
-                            src={product.imageSrc}
-                            alt={product.name}
-                            width={200}
-                            height={150}
-                            className="rounded-md object-cover"
-                            style={{maxWidth: '100%', maxHeight: '100%'}}
-                          />
-                        </div>
-                        <CardContent>
-                          <CardTitle className="text-sm">{product.name}</CardTitle>
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  ))}
-                </div>
-              </ScrollArea>
-            </CardContent>
-          </Card>
+      <div style={{marginBottom: '50px'}}>
+        {selectedCategory === 'All' || selectedCategory === 'Category 1' || selectedCategory === 'Category 2' || selectedCategory === 'Category 3' || selectedCategory === 'Category 4' ? (
+          <>
+            <Card>
+              <CardHeader>
+                <CardTitle>Product Gallery</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ScrollArea className="w-full whitespace-nowrap">
+                  <div className="flex animate-horizontal-scroll">
+                    {keyProducts.map(product => (
+                      <Link key={product.id} href={`/product/${product.id}`}>
+                        <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                          <div className="flex justify-center items-center h-32">
+                            <Image
+                              src={product.imageSrc}
+                              alt={product.name}
+                              width={200}
+                              height={150}
+                              className="rounded-md object-cover"
+                              style={{maxWidth: '100%', maxHeight: '100%'}}
+                            />
+                          </div>
+                          <CardContent>
+                            <CardTitle className="text-sm">{product.name}</CardTitle>
+                          </CardContent>
+                        </Card>
+                      </Link>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                Product List {selectedCategory !== 'All' ? `(${selectedCategory})` : '(All)'}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              {filteredProducts.length > 0 ? (
-                <div className="grid grid-cols-5 gap-4 p-4">
-                  {filteredProducts.slice(0, 20).map(product => (
-                    <Link key={product.id} href={`/product/${product.id}`}>
-                      <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                        <div className="flex justify-center items-center h-32">
-                          <Image
-                            src={product.imageSrc}
-                            alt={product.name}
-                            width={200}
-                            height={150}
-                            className="rounded-md object-cover"
-                            style={{maxWidth: '100%', maxHeight: '100%'}}
-                          />
-                        </div>
-                        <CardContent>
-                          <CardTitle className="text-sm">{product.name}</CardTitle>
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <p>No products found in this category.</p>
-              )}
-            </CardContent>
-          </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>
+                  Product List {selectedCategory !== 'All' ? `(${selectedCategory})` : '(All)'}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                {filteredProducts.length > 0 ? (
+                  <div className="grid grid-cols-5 gap-4 p-4">
+                    {filteredProducts.slice(0, 20).map(product => (
+                      <Link key={product.id} href={`/product/${product.id}`}>
+                        <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                          <div className="flex justify-center items-center h-32">
+                            <Image
+                              src={product.imageSrc}
+                              alt={product.name}
+                              width={200}
+                              height={150}
+                              className="rounded-md object-cover"
+                              style={{maxWidth: '100%', maxHeight: '100%'}}
+                            />
+                          </div>
+                          <CardContent>
+                            <CardTitle className="text-sm">{product.name}</CardTitle>
+                          </CardContent>
+                        </Card>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <p>No products found in this category.</p>
+                )}
+              </CardContent>
+            </Card>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Company Profile</CardTitle>
-              <CardDescription>About us</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <Image
-                src="https://picsum.photos/id/222/400/200"
-                alt="Company"
-                width={400}
-                height={200}
-                className="rounded-md object-cover"
-              />
-              <p>
-                We are a leading provider of innovative solutions... (truncated)
-              </p>
-            </CardContent>
-          </Card>
-        </>
-      ) : selectedCategory === 'Advantages' ? (
-        <div className="container mx-auto p-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Company Advantages</CardTitle>
-              <CardDescription>Our key advantages</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              {companyAdvantages.map(advantage => (
-                <div key={advantage.id}>
-                  <CardTitle>{advantage.description}</CardTitle>
-                  <Image
-                    src={advantage.imageSrc}
-                    alt={advantage.description}
-                    width={400}
-                    height={200}
-                    className="rounded-md object-cover"
-                  />
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
-      ) : selectedCategory === 'Success Stories' ? (
-        <div className="container mx-auto p-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>Success Stories</CardTitle>
-              <CardDescription>Inspiring stories of our success</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              {successStories.map(story => (
-                <div key={story.id}>
-                  <CardTitle>{story.caseName}</CardTitle>
-                  <Image
-                    src={story.imageSrc}
-                    alt={story.caseName}
-                    width={400}
-                    height={200}
-                    className="rounded-md object-cover"
-                  />
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </div>
-      ) : selectedCategory === 'Contact Us' ? (
-        <div className="container mx-auto p-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>{contactInfo.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <Image
-                src={contactInfo.qrCodeImage}
-                alt="QR Code"
-                width={100}
-                height={100}
-                className="rounded-md"
-              />
-              <CardDescription>Phone: {contactInfo.phoneNumber}</CardDescription>
-              <CardDescription>Email: {contactInfo.email}</CardDescription>
-              <CardDescription>Address: {contactInfo.address}</CardDescription>
-            </CardContent>
-          </Card>
-        </div>
-      ) : null}
-
-      {selectedCategory === 'All' || selectedCategory === 'Advantages' ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>Company Advantages</CardTitle>
-          </CardHeader>
-          <CardContent className="flex gap-4 p-4">
-            {companyAdvantages.map(advantage => (
-              <Link key={advantage.id} href={`/advantage/${advantage.id}`}>
-                <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                  <div className="flex justify-center items-center h-32">
+            <Card>
+              <CardHeader>
+                <CardTitle>Company Profile</CardTitle>
+                <CardDescription>About us</CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <Image
+                  src="https://picsum.photos/id/222/400/200"
+                  alt="Company"
+                  width={400}
+                  height={200}
+                  className="rounded-md object-cover"
+                />
+                <p>
+                  We are a leading provider of innovative solutions... (truncated)
+                </p>
+              </CardContent>
+            </Card>
+          </>
+        ) : selectedCategory === 'Advantages' ? (
+          <div className="container mx-auto p-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Company Advantages</CardTitle>
+                <CardDescription>Our key advantages</CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                {companyAdvantages.map(advantage => (
+                  <div key={advantage.id}>
+                    <CardTitle>{advantage.description}</CardTitle>
                     <Image
                       src={advantage.imageSrc}
                       alt={advantage.description}
-                      width={200}
-                      height={150}
+                      width={400}
+                      height={200}
                       className="rounded-md object-cover"
-                      style={{maxWidth: '100%', maxHeight: '100%'}}
                     />
                   </div>
-                  <CardContent>
-                    <CardTitle className="text-sm">{advantage.description}</CardTitle>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </CardContent>
-        </Card>
-      ) : null}
-
-      {selectedCategory === 'All' || selectedCategory === 'Success Stories' ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>Success Stories</CardTitle>
-          </CardHeader>
-          <CardContent className="grid grid-cols-3 gap-4">
-            {successStories.slice(0, 15).map(story => (
-              <Link key={story.id} href={`/success-story/${story.id}`}>
-                <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                  <div className="flex justify-center items-center h-32">
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        ) : selectedCategory === 'Success Stories' ? (
+          <div className="container mx-auto p-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Success Stories</CardTitle>
+                <CardDescription>Inspiring stories of our success</CardDescription>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                {successStories.map(story => (
+                  <div key={story.id}>
+                    <CardTitle>{story.caseName}</CardTitle>
                     <Image
                       src={story.imageSrc}
                       alt={story.caseName}
-                      width={200}
-                      height={150}
+                      width={400}
+                      height={200}
                       className="rounded-md object-cover"
-                      style={{maxWidth: '100%', maxHeight: '100%'}}
                     />
                   </div>
-                  <CardContent>
-                    <CardTitle className="text-sm">{story.caseName}</CardTitle>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </CardContent>
-        </Card>
-      ) : null}
+                ))}
+              </CardContent>
+            </Card>
+          </div>
+        ) : selectedCategory === 'Contact Us' ? (
+          <div className="container mx-auto p-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>{contactInfo.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="grid gap-4">
+                <Image
+                  src={contactInfo.qrCodeImage}
+                  alt="QR Code"
+                  width={100}
+                  height={100}
+                  className="rounded-md"
+                />
+                <CardDescription>Phone: {contactInfo.phoneNumber}</CardDescription>
+                <CardDescription>Email: {contactInfo.email}</CardDescription>
+                <CardDescription>Address: {contactInfo.address}</CardDescription>
+              </CardContent>
+            </Card>
+          </div>
+        ) : null}
+
+        {selectedCategory === 'All' || selectedCategory === 'Advantages' ? (
+          <Card>
+            <CardHeader>
+              <CardTitle>Company Advantages</CardTitle>
+            </CardHeader>
+            <CardContent className="flex gap-4 p-4">
+              {companyAdvantages.map(advantage => (
+                <Link key={advantage.id} href={`/advantage/${advantage.id}`}>
+                  <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                    <div className="flex justify-center items-center h-32">
+                      <Image
+                        src={advantage.imageSrc}
+                        alt={advantage.description}
+                        width={200}
+                        height={150}
+                        className="rounded-md object-cover"
+                        style={{maxWidth: '100%', maxHeight: '100%'}}
+                      />
+                    </div>
+                    <CardContent>
+                      <CardTitle className="text-sm">{advantage.description}</CardTitle>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </CardContent>
+          </Card>
+        ) : null}
+
+        {selectedCategory === 'All' || selectedCategory === 'Success Stories' ? (
+          <Card>
+            <CardHeader>
+              <CardTitle>Success Stories</CardTitle>
+            </CardHeader>
+            <CardContent className="grid grid-cols-3 gap-4">
+              {successStories.slice(0, 15).map(story => (
+                <Link key={story.id} href={`/success-story/${story.id}`}>
+                  <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                    <div className="flex justify-center items-center h-32">
+                      <Image
+                        src={story.imageSrc}
+                        alt={story.caseName}
+                        width={200}
+                        height={150}
+                        className="rounded-md object-cover"
+                        style={{maxWidth: '100%', maxHeight: '100%'}}
+                      />
+                    </div>
+                    <CardContent>
+                      <CardTitle className="text-sm">{story.caseName}</CardTitle>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </CardContent>
+          </Card>
+        ) : null}
+      </div>
 
       {!isContactCardVisible && (
         <button
