@@ -8,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import React from 'react';
 
 // Placeholder data - replace with your actual product data source
 const products = Array.from({ length: 20 }, (_, i) => ({
@@ -39,7 +40,8 @@ interface Props {
 }
 
 export default function ProductDetailPage({ params }: Props) {
-  const product = products.find((product) => product.id === parseInt(params.id));
+  const productId = parseInt(params.id);
+  const product = products.find((product) => product.id === productId);
 
   if (!product) {
     return <div>Product not found</div>;
