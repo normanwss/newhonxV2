@@ -72,10 +72,6 @@ export default function Home() {
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
   const [currentSubMenu, setCurrentSubMenu] = useState<string|null>(null);
 
-  const productGalleryRef = useRef<HTMLDivElement>(null);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  const scrollAmount = 200;
-
   const filteredProducts = products.filter(product => {
     const searchMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     const categoryMatch = selectedCategory === 'All' || product.category === selectedCategory;
@@ -85,30 +81,6 @@ export default function Home() {
   const toggleContactCardVisibility = () => {
     setIsContactCardVisible(!isContactCardVisible);
   };
-
-  useEffect(() => {
-    let animationFrameId: number;
-
-    const animateScroll = () => {
-      if (!productGalleryRef.current) return;
-      setScrollLeft(prevScrollLeft => {
-        const newScrollLeft = prevScrollLeft + 1;
-        if (newScrollLeft >= (productGalleryRef.current?.scrollWidth || 0) - (productGalleryRef.current?.clientWidth||0)) {
-          return 0;
-        }
-        return newScrollLeft;
-      });
-      animationFrameId = requestAnimationFrame(animateScroll);
-    };
-
-    if (!isContactCardVisible) {
-      animationFrameId = requestAnimationFrame(animateScroll);
-    }
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [isContactCardVisible]);
 
   const handleCategoryClick = (categoryName: string) => {
     setSelectedCategory(categoryName);
@@ -197,8 +169,6 @@ export default function Home() {
         </CardContent>
       </Card>
 
-
-
       <Card>
         <CardHeader>
           <CardTitle>Company Profile</CardTitle>
@@ -220,56 +190,59 @@ export default function Home() {
 
 
 
-      <h2 className="text-xl font-semibold mt-4">Company Advantages</h2>
-      <div
-        ref={productGalleryRef}
-        className="flex overflow-x-auto whitespace-nowrap p-4 scroll-smooth"
-      >
-        {companyAdvantages.map(advantage => (
-          <Link key={advantage.id} href={`/advantage/${advantage.id}`}>
-            <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-              <div className="flex justify-center items-center h-32">
-                <Image
-                  src={advantage.imageSrc}
-                  alt={advantage.description}
-                  width={200}
-                  height={150}
-                  className="rounded-md object-cover"
-                  style={{ maxWidth: '100%', maxHeight: '100%' }}
-                />
-              </div>
-              <CardContent>
-                <CardTitle className="text-sm">{advantage.description}</CardTitle>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
-      </div>
+      <Card>
+        <CardHeader>
+            <CardTitle>Company Advantages</CardTitle>
+        </CardHeader>
+        <CardContent className="flex gap-4 p-4">
+          {companyAdvantages.map(advantage => (
+            <Link key={advantage.id} href={`/advantage/${advantage.id}`}>
+              <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                <div className="flex justify-center items-center h-32">
+                  <Image
+                    src={advantage.imageSrc}
+                    alt={advantage.description}
+                    width={200}
+                    height={150}
+                    className="rounded-md object-cover"
+                    style={{ maxWidth: '100%', maxHeight: '100%' }}
+                  />
+                </div>
+                <CardContent>
+                  <CardTitle className="text-sm">{advantage.description}</CardTitle>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </CardContent>
+      </Card>
 
-
-
-      <h2 className="text-xl font-semibold mt-4">Success Stories</h2>
-      <div className="grid grid-cols-3 gap-4">
-        {successStories.slice(0, 15).map(story => (
-          <Link key={story.id} href={`/success-story/${story.id}`}>
-            <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-              <div className="flex justify-center items-center h-32">
-                <Image
-                  src={story.imageSrc}
-                  alt={story.caseName}
-                  width={200}
-                  height={150}
-                  className="rounded-md object-cover"
-                  style={{ maxWidth: '100%', maxHeight: '100%' }}
-                />
-              </div>
-              <CardContent>
-                <CardTitle className="text-sm">{story.caseName}</CardTitle>
-              </CardContent>
-            </Card>
-          </Link>
-        ))}
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Success Stories</CardTitle>
+        </CardHeader>
+        <CardContent className="grid grid-cols-3 gap-4">
+          {successStories.slice(0, 15).map(story => (
+            <Link key={story.id} href={`/success-story/${story.id}`}>
+              <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                <div className="flex justify-center items-center h-32">
+                  <Image
+                    src={story.imageSrc}
+                    alt={story.caseName}
+                    width={200}
+                    height={150}
+                    className="rounded-md object-cover"
+                    style={{ maxWidth: '100%', maxHeight: '100%' }}
+                  />
+                </div>
+                <CardContent>
+                  <CardTitle className="text-sm">{story.caseName}</CardTitle>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
+        </CardContent>
+      </Card>
 
 
       {isContactCardVisible && (
