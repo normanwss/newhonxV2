@@ -403,6 +403,15 @@ export default function Home() {
           Contact Us
         </button>
       )}
+
+      <footer className="fixed bottom-0 left-0 w-full bg-white p-4 border-t border-border z-50">
+        <nav className="flex justify-around">
+          <Link href="/" className="hover:text-accent transition-colors">Home</Link>
+          <Link href="/products" className="hover:text-accent transition-colors">Products</Link>
+          <Link href="/about" className="hover:text-accent transition-colors">About Us</Link>
+          <Link href="/contact" className="hover:text-accent transition-colors">Contact</Link>
+        </nav>
+      </footer>
     </>
   );
 }
