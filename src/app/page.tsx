@@ -93,7 +93,7 @@ const keyProducts = products.slice(0, 5);
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [isContactCardVisible, setIsContactCardVisible] = useState(false);
+  const [isContactCardVisible, setIsContactCardVisible] = useState(true);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
   const [currentSubMenu, setCurrentSubMenu] = useState<string | null>(null);
 
