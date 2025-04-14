@@ -45,6 +45,8 @@ const initialProducts = Array.from({ length: 20 }, (_, i) => ({
   id: i,
   name: `Product ${i + 1}`,
   imageSrc: `https://picsum.photos/id/${i + 30}/200/200`,
+  category: `Category ${Math.floor(i / 5) + 1}`, // Assign products to categories
+  subcategory: `Subcategory ${i % 2 + 1}`
 }));
 
 const companyAdvantages = Array.from({ length: 5 }, (_, i) => ({
@@ -69,6 +71,18 @@ const contactInfo = {
 
 export default function Home() {
   const [isContactCardVisible, setIsContactCardVisible] = useState(true);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  const handleCategoryClick = (category: string | null) => {
+    setSelectedCategory(category);
+  };
+
+  const filteredProducts = selectedCategory
+    ? initialProducts.filter(
+        (product) =>
+          product.category === selectedCategory || product.subcategory === selectedCategory
+      )
+    : initialProducts;
 
   return (
     <div className="container mx-auto p-4 relative mb-16">
@@ -81,7 +95,10 @@ export default function Home() {
         <div className="flex">
           {productCategories.map((category) => (
             <div key={category.name} className="relative group">
-              <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-accent hover:text-accent-foreground flex items-center">
+              <button
+                className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-accent hover:text-accent-foreground flex items-center"
+                onClick={() => handleCategoryClick(category.name)}
+              >
                 {category.name}
                 {category.subcategories && category.subcategories.length > 0 && (
                   <ChevronDown className="ml-2 h-4 w-4" />
@@ -94,6 +111,7 @@ export default function Home() {
                       key={subcategory}
                       href="#"
                       className="block px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground"
+                      onClick={() => handleCategoryClick(subcategory)}
                     >
                       {subcategory}
                     </a>
@@ -102,6 +120,7 @@ export default function Home() {
               )}
             </div>
           ))}
+          <Button onClick={() => handleCategoryClick(null)}>All Products</Button>
         </div>
       </div>
 
@@ -112,7 +131,7 @@ export default function Home() {
       <CompanyProfile profile={companyProfile} />
 
       {/* Product Center */}
-      <ProductCenter products={initialProducts} />
+      <ProductCenter products={filteredProducts} />
 
       {/* Company Advantages Carousel */}
       <CompanyAdvantages advantages={companyAdvantages} />
@@ -223,7 +242,7 @@ function CompanyProfile({
 function ProductCenter({
   products,
 }: {
-  products: { id: number; name: string; imageSrc: string }[];
+  products: { id: number; name: string; imageSrc: string, category: string, subcategory: string }[];
 }) {
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -376,6 +395,8 @@ function ContactCard({ contactInfo, onClose }: { contactInfo: { title: string; d
     </Card>
   );
 }
+
+
 
 
 
