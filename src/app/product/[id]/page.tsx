@@ -49,7 +49,7 @@ export default function ProductDetailPage({ params }: Props) {
 
   return (
     <div className="container mx-auto p-4">
-      <Card>
+      <Card className="md:w-3/4 lg:w-1/2">
         <CardHeader>
           <CardTitle>{product.name}</CardTitle>
           <CardDescription>More details about this product</CardDescription>
@@ -70,5 +70,6 @@ export default function ProductDetailPage({ params }: Props) {
     </div>
   );
 }
+
 
 
