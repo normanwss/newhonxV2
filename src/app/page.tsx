@@ -83,7 +83,7 @@ export default function Home() {
   return (
     <div className="container mx-auto p-4 relative">
       {/* Company Name */}
-      <h1 className="text-2xl font-bold mb-4 text-foreground">{companyName}</h1>
+      <h1 className="text-2xl font-bold mb-4 text-foreground bg-secondary text-secondary-foreground p-2 rounded-md">{companyName}</h1>
 
       {/* Product Category */}
       <div className="mb-4">
@@ -360,4 +360,5 @@ function ContactCard({ contactInfo }: { contactInfo: { title: string; descriptio
     </Card>
   );
 }
+
 
