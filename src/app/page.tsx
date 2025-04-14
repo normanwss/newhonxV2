@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, X } from 'lucide-react';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -121,15 +121,22 @@ export default function Home() {
       <SuccessStories stories={successStories} />
 
       {/* Contact Card */}
-      {isContactCardVisible && <ContactCard contactInfo={contactInfo} />}
+      {isContactCardVisible && (
+        <ContactCard
+          contactInfo={contactInfo}
+          onClose={() => setIsContactCardVisible(false)}
+        />
+      )}
 
       {/* Toggle Button */}
-      <Button
-        onClick={() => setIsContactCardVisible(!isContactCardVisible)}
-        className="fixed top-1/2 transform -translate-y-1/2 right-4 z-50"
-      >
-        {isContactCardVisible ? 'Hide Contact' : 'Show Contact'}
-      </Button>
+      {!isContactCardVisible && (
+        <Button
+          onClick={() => setIsContactCardVisible(true)}
+          className="fixed top-1/2 transform -translate-y-1/2 right-4 z-50"
+        >
+          Show Contact
+        </Button>
+      )}
 
       {/* Fixed Bottom Menu */}
       <div className="fixed bottom-0 left-0 w-full p-4 flex justify-around z-30 mt-4 bg-background">
@@ -324,7 +331,7 @@ function SuccessStories({
   );
 }
 
-function ContactCard({ contactInfo }: { contactInfo: { title: string; description: string; email: string; phone: string; address: string } }) {
+function ContactCard({ contactInfo, onClose }: { contactInfo: { title: string; description: string; email: string; phone: string; address: string }; onClose: () => void }) {
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -346,9 +353,12 @@ function ContactCard({ contactInfo }: { contactInfo: { title: string; descriptio
 
   return (
     <Card className="fixed top-1/2 transform -translate-y-1/2 right-4 w-80 z-10 overflow-hidden" style={{ height: '300px' }}>
-      <CardHeader>
+      <CardHeader className="flex items-center justify-between">
         <CardTitle>{contactInfo.title}</CardTitle>
-        <CardDescription>{contactInfo.description}</CardDescription>
+        <Button variant="ghost" size="icon" onClick={onClose}>
+          <X className="h-4 w-4" />
+          <span className="sr-only">Close</span>
+        </Button>
       </CardHeader>
       <CardContent ref={cardRef} style={{ overflowY: 'auto', padding: '16px' }}>
         <p className="mb-2">Email: <a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a></p>
@@ -358,6 +368,7 @@ function ContactCard({ contactInfo }: { contactInfo: { title: string; descriptio
     </Card>
   );
 }
+
 
 
 
