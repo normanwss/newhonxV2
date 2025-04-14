@@ -186,29 +186,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Product Center */}
-        <div className="grid grid-cols-5 gap-4 p-4">
-          {filteredProducts.slice(0, 20).map(product => (
-              <Link key={product.id} href={`/product/${product.id}`} passHref>
-                <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                  <div className="flex justify-center items-center h-32">
-                    <Image
-                        src={product.imageSrc}
-                        alt={product.name}
-                        width={200}
-                        height={150}
-                        className="rounded-md object-cover"
-                        style={{maxWidth: '100%', maxHeight: '100%'}}
-                    />
-                  </div>
-                  <CardContent>
-                    <CardTitle className="text-sm">{product.name}</CardTitle>
-                  </CardContent>
-                </Card>
-              </Link>
-          ))}
-        </div>
-
         {/* Company Profile */}
         <div className="p-4">
           <Card>
@@ -230,6 +207,29 @@ export default function Home() {
               </p>
             </CardContent>
           </Card>
+        </div>
+
+        {/* Product Center */}
+        <div className="grid grid-cols-5 gap-4 p-4">
+          {filteredProducts.slice(0, 20).map(product => (
+              <Link key={product.id} href={`/product/${product.id}`} passHref>
+                <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                  <div className="flex justify-center items-center h-32">
+                    <Image
+                        src={product.imageSrc}
+                        alt={product.name}
+                        width={200}
+                        height={150}
+                        className="rounded-md object-cover"
+                        style={{maxWidth: '100%', maxHeight: '100%'}}
+                    />
+                  </div>
+                  <CardContent>
+                    <CardTitle className="text-sm">{product.name}</CardTitle>
+                  </CardContent>
+                </Card>
+              </Link>
+          ))}
         </div>
 
         {/* Company Advantages */}
