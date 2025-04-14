@@ -26,6 +26,10 @@ const companyName = 'Acme Corp';
 
 const productCategories = [
   {
+    name: 'All',
+    subcategories: [],
+  },
+  {
     name: 'Category 1',
     subcategories: ['Subcategory 1.1', 'Subcategory 1.2'],
   },
@@ -43,6 +47,10 @@ const productCategories = [
   },
   {
     name: 'Advantages',
+    subcategories: [],
+  },
+  {
+    name: 'Success Stories',
     subcategories: [],
   },
   {
@@ -110,6 +118,10 @@ export default function Home() {
     setSelectedCategory('Advantages');
   };
 
+  const handleSuccessStoriesCategoryClick = () => {
+    setSelectedCategory('Success Stories');
+  };
+
   const handleContactUsCategoryClick = () => {
     setSelectedCategory('Contact Us');
   };
@@ -154,9 +166,11 @@ export default function Home() {
               onClick={
                 category.name === 'Advantages'
                   ? handleAdvantageCategoryClick
-                  : category.name === 'Contact Us'
-                    ? handleContactUsCategoryClick
-                    : () => handleCategoryClick(category.name)
+                  : category.name === 'Success Stories'
+                    ? handleSuccessStoriesCategoryClick
+                    : category.name === 'Contact Us'
+                      ? handleContactUsCategoryClick
+                      : () => handleCategoryClick(category.name)
               }
               className={
                 selectedCategory === category.name
@@ -185,7 +199,7 @@ export default function Home() {
         ))}
       </Menubar>
 
-      {selectedCategory !== 'Advantages' && selectedCategory !== 'Contact Us' ? (
+      {selectedCategory !== 'Advantages' && selectedCategory !== 'Success Stories' && selectedCategory !== 'Contact Us' ? (
         <>
           <Card>
             <CardHeader>
@@ -295,6 +309,29 @@ export default function Home() {
             </CardContent>
           </Card>
         </div>
+      ) : selectedCategory === 'Success Stories' ? (
+        <div className="container mx-auto p-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Success Stories</CardTitle>
+              <CardDescription>Inspiring stories of our success</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+              {successStories.map(story => (
+                <div key={story.id}>
+                  <CardTitle>{story.caseName}</CardTitle>
+                  <Image
+                    src={story.imageSrc}
+                    alt={story.caseName}
+                    width={400}
+                    height={200}
+                    className="rounded-md object-cover"
+                  />
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
       ) : selectedCategory === 'Contact Us' ? (
         <div className="container mx-auto p-4">
           <Card>
@@ -370,29 +407,6 @@ export default function Home() {
           ))}
         </CardContent>
       </Card>
-
-      {isContactCardVisible && (
-        <div className="fixed top-1/2 right-4 transform -translate-y-1/2 bg-white border rounded-md shadow-lg p-4 w-80 z-50">
-          <button
-            className="absolute top-2 right-2 px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-            onClick={toggleContactCardVisibility}>
-            Hide
-          </button>
-          <CardTitle>{contactInfo.title}</CardTitle>
-          <CardContent>
-            <Image
-              src={contactInfo.qrCodeImage}
-              alt="QR Code"
-              width={100}
-              height={100}
-              className="rounded-md"
-            />
-            <CardDescription>Phone: {contactInfo.phoneNumber}</CardDescription>
-            <CardDescription>Email: {contactInfo.email}</CardDescription>
-            <CardDescription>Address: {contactInfo.address}</CardDescription>
-          </CardContent>
-        </div>
-      )}
 
       {!isContactCardVisible && (
         <button
