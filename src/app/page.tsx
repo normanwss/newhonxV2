@@ -70,7 +70,7 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isContactCardVisible, setIsContactCardVisible] = useState(false);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
-  const [currentSubMenu, setCurrentSubMenu] = useState(null);
+  const [currentSubMenu, setCurrentSubMenu] = useState<string|null>(null);
 
   const productGalleryRef = useRef<HTMLDivElement>(null);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -93,7 +93,7 @@ export default function Home() {
       if (!productGalleryRef.current) return;
       setScrollLeft(prevScrollLeft => {
         const newScrollLeft = prevScrollLeft + 1;
-        if (newScrollLeft >= productGalleryRef.current.scrollWidth - productGalleryRef.current.clientWidth) {
+        if (newScrollLeft >= (productGalleryRef.current?.scrollWidth || 0) - (productGalleryRef.current?.clientWidth||0)) {
           return 0;
         }
         return newScrollLeft;
@@ -116,192 +116,193 @@ export default function Home() {
   };
 
   return (
-    
-      
-        <div className="flex items-center justify-between p-4 bg-secondary rounded-md shadow-md">
-          <h1 className="text-2xl font-semibold">{companyName}</h1>
-          <Input
-            type="text"
-            placeholder="Search products..."
-            className="w-1/3"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+    <>
+      <div className="flex items-center justify-between p-4 bg-secondary rounded-md shadow-md">
+        <h1 className="text-2xl font-semibold">{companyName}</h1>
+        <Input
+          type="text"
+          placeholder="Search products..."
+          className="w-1/3"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
+
+      <Menubar>
+        <MenubarMenu>
+          <MenubarTrigger onClick={() => handleCategoryClick('All')} className={selectedCategory === 'All' ? 'bg-accent text-accent-foreground rounded-md' : 'rounded-md'}>
+            All
+          </MenubarTrigger>
+        </MenubarMenu>
+        {productCategories.map((category) => (
+          <MenubarMenu key={category.name} onPointerEnter={() => {
+            setCurrentSubMenu(category.name);
+            setIsSubMenuOpen(true);
+          }}
+            onPointerLeave={() => {
+              setCurrentSubMenu(null);
+              setIsSubMenuOpen(false);
+            }}>
+            <MenubarTrigger onClick={() => handleCategoryClick(category.name)} className={selectedCategory === category.name ? 'bg-accent text-accent-foreground rounded-md' : 'rounded-md'}>
+              {category.name}
+              {category.subcategories.length > 0 && <Badge className="ml-2">+{category.subcategories.length}</Badge>}
+            </MenubarTrigger>
+            {category.subcategories.length > 0 && (
+              <MenubarContent>
+                {category.subcategories.map((subcategory) => (
+                  <MenubarItem key={subcategory} onClick={() => handleCategoryClick(subcategory)}>
+                    {subcategory}
+                  </MenubarItem>
+                ))}
+              </MenubarContent>
+            )}
+          </MenubarMenu>
+        ))}
+      </Menubar>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Product List {selectedCategory !== "All" ? `(${selectedCategory})` : "(All)"}</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4">
+          {filteredProducts.length > 0 ? (
+            <div className="grid grid-cols-5 gap-4 p-4">
+              {filteredProducts.slice(0, 20).map(product => (
+                <Link
+                  key={product.id}
+                  href={`/product/${product.id}`}
+                >
+                  <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                    <div className="flex justify-center items-center h-32">
+                      <Image
+                        src={product.imageSrc}
+                        alt={product.name}
+                        width={200}
+                        height={150}
+                        className="rounded-md object-cover"
+                        style={{ maxWidth: '100%', maxHeight: '100%' }}
+                      />
+                    </div>
+                    <CardContent>
+                      <CardTitle className="text-sm">{product.name}</CardTitle>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p>No products found in this category.</p>
+          )}
+        </CardContent>
+      </Card>
+
+
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Company Profile</CardTitle>
+          <CardDescription>About us</CardDescription>
+        </CardHeader>
+        <CardContent className="grid gap-4">
+          <Image
+            src="https://picsum.photos/id/222/400/200"
+            alt="Company"
+            width={400}
+            height={200}
+            className="rounded-md object-cover"
           />
-        </div>
+          <p>
+            We are a leading provider of innovative solutions... (truncated)
+          </p>
+        </CardContent>
+      </Card>
 
-        
-          <Menubar>
-            <MenubarMenu>
-              <MenubarTrigger onClick={() => handleCategoryClick('All')}>
-                All
-              </MenubarTrigger>
-            </MenubarMenu>
-            {productCategories.map((category) => (
-              <MenubarMenu key={category.name} onPointerEnter={() => {
-                setCurrentSubMenu(category.name);
-                setIsSubMenuOpen(true);
-              }}
-                           onPointerLeave={() => {
-                             setCurrentSubMenu(null);
-                             setIsSubMenuOpen(false);
-                           }}>
-                <MenubarTrigger onClick={() => handleCategoryClick(category.name)}>
-                  {category.name}
-                  {category.subcategories.length > 0 && <Badge className="ml-2">+{category.subcategories.length}</Badge>}
-                </MenubarTrigger>
-                {category.subcategories.length > 0 && (
-                  <MenubarContent>
-                    {category.subcategories.map((subcategory) => (
-                      <MenubarItem key={subcategory} onClick={() => handleCategoryClick(subcategory)}>
-                        {subcategory}
-                      </MenubarItem>
-                    ))}
-                  </MenubarContent>
-                )}
-              </MenubarMenu>
-            ))}
-          </Menubar>
-        
 
-        
-          <h2 className="text-xl font-semibold mt-4">Product List</h2>
-          <div className="grid grid-cols-5 gap-4 p-4">
-            {filteredProducts.slice(0, 20).map(product => (
-              <Link
-                key={product.id}
-                href={`/product/${product.id}`}
-              >
-                <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                  <div className="flex justify-center items-center h-32">
-                    <Image
-                      src={product.imageSrc}
-                      alt={product.name}
-                      width={200}
-                      height={150}
-                      className="rounded-md object-cover"
-                      style={{ maxWidth: '100%', maxHeight: '100%' }}
-                    />
-                  </div>
-                  <CardContent>
-                    <CardTitle className="text-sm">{product.name}</CardTitle>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        
 
-        
-          <Card>
-            <CardHeader>
-              <CardTitle>Company Profile</CardTitle>
-              <CardDescription>About us</CardDescription>
-            </CardHeader>
-            <CardContent className="grid gap-4">
-              <Image
-                src="https://picsum.photos/id/222/400/200"
-                alt="Company"
-                width={400}
-                height={200}
-                className="rounded-md object-cover"
-              />
-              <p>
-                We are a leading provider of innovative solutions... (truncated)
-              </p>
-            </CardContent>
-          </Card>
-        
+      <h2 className="text-xl font-semibold mt-4">Company Advantages</h2>
+      <div
+        ref={productGalleryRef}
+        className="flex overflow-x-auto whitespace-nowrap p-4 scroll-smooth"
+      >
+        {companyAdvantages.map(advantage => (
+          <Link key={advantage.id} href={`/advantage/${advantage.id}`}>
+            <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+              <div className="flex justify-center items-center h-32">
+                <Image
+                  src={advantage.imageSrc}
+                  alt={advantage.description}
+                  width={200}
+                  height={150}
+                  className="rounded-md object-cover"
+                  style={{ maxWidth: '100%', maxHeight: '100%' }}
+                />
+              </div>
+              <CardContent>
+                <CardTitle className="text-sm">{advantage.description}</CardTitle>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
 
-        
-          <h2 className="text-xl font-semibold mt-4">Company Advantages</h2>
-          <div
-            ref={productGalleryRef}
-            className="flex overflow-x-auto whitespace-nowrap p-4 scroll-smooth"
-          >
-            {companyAdvantages.map(advantage => (
-              <Link key={advantage.id} href={`/advantage/${advantage.id}`}>
-                <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                  <div className="flex justify-center items-center h-32">
-                    <Image
-                      src={advantage.imageSrc}
-                      alt={advantage.description}
-                      width={200}
-                      height={150}
-                      className="rounded-md object-cover"
-                      style={{ maxWidth: '100%', maxHeight: '100%' }}
-                    />
-                  </div>
-                  <CardContent>
-                    <CardTitle className="text-sm">{advantage.description}</CardTitle>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        
 
-        
-          <h2 className="text-xl font-semibold mt-4">Success Stories</h2>
-          <div className="grid grid-cols-3 gap-4">
-            {successStories.slice(0, 15).map(story => (
-              <Link key={story.id} href={`/success-story/${story.id}`}>
-                <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                  <div className="flex justify-center items-center h-32">
-                    <Image
-                      src={story.imageSrc}
-                      alt={story.caseName}
-                      width={200}
-                      height={150}
-                      className="rounded-md object-cover"
-                      style={{ maxWidth: '100%', maxHeight: '100%' }}
-                    />
-                  </div>
-                  <CardContent>
-                    <CardTitle className="text-sm">{story.caseName}</CardTitle>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        
 
-        {isContactCardVisible && (
-          <div className="fixed top-1/2 right-4 transform -translate-y-1/2 bg-white border rounded-md shadow-lg p-4 w-80 z-50">
-            <button
-              className="absolute top-2 right-2 px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-              onClick={toggleContactCardVisibility}
-            >
-              Hide
-            </button>
-            <CardTitle>{contactInfo.title}</CardTitle>
-            <CardContent>
-              <Image
-                src={contactInfo.qrCodeImage}
-                alt="QR Code"
-                width={100}
-                height={100}
-                className="rounded-md"
-              />
-              <CardDescription>Phone: {contactInfo.phoneNumber}</CardDescription>
-              <CardDescription>Email: {contactInfo.email}</CardDescription>
-              <CardDescription>Address: {contactInfo.address}</CardDescription>
-            </CardContent>
-          </div>
-        )}
+      <h2 className="text-xl font-semibold mt-4">Success Stories</h2>
+      <div className="grid grid-cols-3 gap-4">
+        {successStories.slice(0, 15).map(story => (
+          <Link key={story.id} href={`/success-story/${story.id}`}>
+            <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+              <div className="flex justify-center items-center h-32">
+                <Image
+                  src={story.imageSrc}
+                  alt={story.caseName}
+                  width={200}
+                  height={150}
+                  className="rounded-md object-cover"
+                  style={{ maxWidth: '100%', maxHeight: '100%' }}
+                />
+              </div>
+              <CardContent>
+                <CardTitle className="text-sm">{story.caseName}</CardTitle>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
 
-        {!isContactCardVisible && (
+
+      {isContactCardVisible && (
+        <div className="fixed top-1/2 right-4 transform -translate-y-1/2 bg-white border rounded-md shadow-lg p-4 w-80 z-50">
           <button
-            className="fixed top-1/2 right-4 transform -translate-y-1/2 px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 z-50"
+            className="absolute top-2 right-2 px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
             onClick={toggleContactCardVisibility}
           >
-            Contact Us
+            Hide
           </button>
-        )}
+          <CardTitle>{contactInfo.title}</CardTitle>
+          <CardContent>
+            <Image
+              src={contactInfo.qrCodeImage}
+              alt="QR Code"
+              width={100}
+              height={100}
+              className="rounded-md"
+            />
+            <CardDescription>Phone: {contactInfo.phoneNumber}</CardDescription>
+            <CardDescription>Email: {contactInfo.email}</CardDescription>
+            <CardDescription>Address: {contactInfo.address}</CardDescription>
+          </CardContent>
+        </div>
+      )}
 
-        
-          © 2024 Product Showcase Pro
-        
-      
-    
-  );
-}
+      {!isContactCardVisible && (
+        <button
+          className="fixed top-1/2 right-4 transform -translate-y-1/2 px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 z-50"
+          onClick={toggleContactCardVisibility}
+        >
+          Contact Us
+        </button>
+      )}
+    </>
+  )}
