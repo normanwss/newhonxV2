@@ -158,7 +158,7 @@ export default function Home() {
         onMouseEnter={() => setIsGalleryHovered(true)}
         onMouseLeave={() => setIsGalleryHovered(false)}
       >
-        <div className={`flex ${galleryAnimationClass}`}>
+        <div className={`flex ${isGalleryHovered ? '' : 'animate-horizontal-scroll'}`}>
           {products.slice(0, 10).map(product => (
             <Link key={product.id} href={`/product/${product.id}`} passHref>
               <Image
@@ -253,18 +253,20 @@ export default function Home() {
         </CardHeader>
         <div className="grid grid-cols-5 gap-4 p-4">
           {successStories.slice(0, 15).map((story, index) => (
-            <Card key={index}>
-              <Image
-                src={story.imageSrc}
-                alt={story.caseName}
-                width={200}
-                height={150}
-                className="rounded-md object-cover"
-              />
-              <CardContent>
-                <CardTitle className="text-sm">{story.caseName}</CardTitle>
-              </CardContent>
-            </Card>
+            <Link key={index} href={`/success-story/${index}`} passHref>
+              <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                <Image
+                  src={story.imageSrc}
+                  alt={story.caseName}
+                  width={200}
+                  height={150}
+                  className="rounded-md object-cover"
+                />
+                <CardContent>
+                  <CardTitle className="text-sm">{story.caseName}</CardTitle>
+                </CardContent>
+              </Card>
+            </Link>
           ))}
         </div>
       </Card>
