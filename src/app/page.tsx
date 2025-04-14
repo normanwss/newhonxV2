@@ -364,10 +364,19 @@ function ContactCard({ contactInfo, onClose }: { contactInfo: { title: string; d
         <p className="mb-2">Email: <a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a></p>
         <p className="mb-2">Phone: {contactInfo.phone}</p>
         <p>Address: {contactInfo.address}</p>
+        {/* Sample QR Code Image */}
+        <Image
+          src="https://picsum.photos/id/800/100/100" // Replace with your QR code image URL
+          alt="QR Code"
+          width={100}
+          height={100}
+          className="mt-4 rounded-md"
+        />
       </CardContent>
     </Card>
   );
 }
+
 
 
 
