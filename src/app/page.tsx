@@ -8,6 +8,15 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 
 // Placeholder data (replace with your actual data)
 const companyName = 'Acme Corp';
@@ -22,7 +31,7 @@ const productCategories = [
   },
   {
     name: 'Category 3',
-    subcategories: ['Subcategory 3.1', 'Subcategory 3.2'],
+    subcategories: [],
   },
 ];
 const productImages = Array.from({ length: 10 }, (_, i) => ({
@@ -62,9 +71,21 @@ export default function Home() {
         <h2 className="text-lg font-semibold mb-2">Product Categories</h2>
         <div className="flex flex-wrap gap-2">
           {productCategories.map((category) => (
-            <div key={category.name} className="bg-secondary text-secondary-foreground rounded-md px-4 py-2">
-              {category.name}
-            </div>
+            <DropdownMenu key={category.name}>
+              <DropdownMenuTrigger asChild>
+                <button className="bg-secondary text-secondary-foreground rounded-md px-4 py-2 hover:bg-accent hover:text-accent-foreground"
+                >{category.name}</button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56">
+                {category.subcategories && category.subcategories.length > 0 ? (
+                  category.subcategories.map((subcategory) => (
+                    <DropdownMenuItem key={subcategory}>{subcategory}</DropdownMenuItem>
+                  ))
+                ) : (
+                  <DropdownMenuItem disabled>No Subcategories</DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
           ))}
         </div>
       </div>
