@@ -132,7 +132,7 @@ export default function Home() {
       </Button>
 
       {/* Fixed Bottom Menu */}
-      <div className="fixed bottom-0 left-0 w-full p-4 flex justify-around z-30 mt-4">
+      <div className="fixed bottom-0 left-0 w-full p-4 flex justify-around z-30 mt-4 bg-background">
         <Link href="/" className="text-blue-500 hover:bg-blue-200 hover:text-blue-700 rounded-md px-2 py-1">Home</Link>
         <Link href="/about" className="text-blue-500 hover:bg-blue-200 hover:text-blue-700 rounded-md px-2 py-1">About</Link>
         <Link href="/products" className="text-blue-500 hover:bg-blue-200 hover:text-blue-700 rounded-md px-2 py-1">Products</Link>
@@ -358,6 +358,7 @@ function ContactCard({ contactInfo }: { contactInfo: { title: string; descriptio
     </Card>
   );
 }
+
 
 
 
