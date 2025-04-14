@@ -9,16 +9,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarSub,
-  MenubarSubContent,
-  MenubarSubTrigger,
-  MenubarTrigger,
-} from "@/components/ui/menubar"
 import { useEffect, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
@@ -143,10 +133,10 @@ export default function Home() {
 
       {/* Fixed Bottom Menu */}
       <div className="fixed bottom-0 left-0 w-full bg-green-100 p-4 flex justify-around z-30">
-        <Link href="/" className="text-blue-500 hover:text-blue-700">Home</Link>
-        <Link href="/about" className="text-blue-500 hover:text-blue-700">About</Link>
-        <Link href="/products" className="text-blue-500 hover:text-blue-700">Products</Link>
-        <Link href="/contact" className="text-blue-500 hover:text-blue-700">Contact</Link>
+        <Link href="/" className="text-blue-500 hover:bg-blue-200 hover:text-blue-700 rounded-md px-2 py-1">Home</Link>
+        <Link href="/about" className="text-blue-500 hover:bg-blue-200 hover:text-blue-700 rounded-md px-2 py-1">About</Link>
+        <Link href="/products" className="text-blue-500 hover:bg-blue-200 hover:text-blue-700 rounded-md px-2 py-1">Products</Link>
+        <Link href="/contact" className="text-blue-500 hover:bg-blue-200 hover:text-blue-700 rounded-md px-2 py-1">Contact</Link>
       </div>
     </div>
   );
@@ -368,6 +358,7 @@ function ContactCard({ contactInfo }: { contactInfo: { title: string; descriptio
     </Card>
   );
 }
+
 
 
 
