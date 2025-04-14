@@ -38,8 +38,8 @@ interface Props {
   params: { id: string };
 }
 
-export default async function ProductDetailPage({ params }: Props) {
-  const product = await getProduct(params.id);
+export default function ProductDetailPage({ params }: Props) {
+  const product = products.find((product) => product.id === parseInt(params.id));
 
   if (!product) {
     return <div>Product not found</div>;
@@ -68,3 +68,4 @@ export default async function ProductDetailPage({ params }: Props) {
     </div>
   );
 }
+
