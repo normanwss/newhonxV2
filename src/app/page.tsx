@@ -133,7 +133,7 @@ export default function Home() {
         </div>
 
         {/* Product Category Menu */}
-        <div className="flex flex-wrap justify-center gap-2 p-2">
+        <div className="flex flex-wrap justify-start gap-2 p-2">
           {productCategories.map(category => (
               <button
                   key={category.name}
@@ -333,4 +333,3 @@ export default function Home() {
       </div>
   );
 }
-
