@@ -218,20 +218,25 @@ export default function Home() {
       </Card>
       
       {/* Company Advantages */}
-      <div className="overflow-hidden mt-4">
-        <div className="flex animate-horizontal-scroll">
-          {companyAdvantages.map((advantage, index) => (
-            <Image
-              key={index}
-              src={advantage.imageSrc}
-              alt={advantage.altText}
-              width={300}
-              height={100}
-              className="mr-4 rounded-md"
-            />
-          ))}
+      <Card>
+        <CardHeader>
+          <CardTitle>Company Advantages</CardTitle>
+        </CardHeader>
+        <div className="overflow-hidden mt-4">
+          <div className="flex animate-horizontal-scroll">
+            {companyAdvantages.map((advantage, index) => (
+              <Image
+                key={index}
+                src={advantage.imageSrc}
+                alt={advantage.altText}
+                width={300}
+                height={100}
+                className="mr-4 rounded-md"
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      </Card>
 
       {/* Success Stories */}
       <Card>
