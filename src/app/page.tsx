@@ -87,11 +87,14 @@ export default function Home() {
   const [isContactCardVisible, setIsContactCardVisible] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [isGalleryHovered, setIsGalleryHovered] = useState(false);
 
   const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
     (selectedCategory === 'All' || product.category === selectedCategory)
   );
+
+  const galleryAnimationClass = isGalleryHovered ? '' : 'animate-horizontal-scroll';
 
   return (
     <div className="min-h-screen relative">
@@ -150,8 +153,12 @@ export default function Home() {
       </div>
 
       {/* Product Image Carousel */}
-      <div className="overflow-hidden">
-        <div className="flex animate-horizontal-scroll">
+      <div
+        className="overflow-hidden"
+        onMouseEnter={() => setIsGalleryHovered(true)}
+        onMouseLeave={() => setIsGalleryHovered(false)}
+      >
+        <div className={`flex ${galleryAnimationClass}`}>
           {products.slice(0, 10).map(product => (
             <Link key={product.id} href={`/product/${product.id}`} passHref>
               <Image
