@@ -88,4 +88,17 @@ body {
   }
 }
 
+@keyframes horizontal-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-horizontal-scroll {
+  animation: horizontal-scroll 20s linear infinite; /* Adjust duration as needed */
+  width: fit-content; /* Make sure the container is wide enough */
+}
 

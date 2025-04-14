@@ -1,3 +1,4 @@
+'use client';
 
 import Image from 'next/image';
 import {
@@ -9,14 +10,16 @@ import {
 } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarSub,
+  MenubarSubContent,
+  MenubarSubTrigger,
+  MenubarTrigger,
+} from "@/components/ui/menubar"
+import { useEffect, useRef } from 'react';
 
 // Placeholder data (replace with your actual data)
 const companyName = 'Acme Corp';
@@ -69,25 +72,27 @@ export default function Home() {
       {/* Product Category */}
       <div className="mb-4">
         <h2 className="text-lg font-semibold mb-2">Product Categories</h2>
-        <div className="flex flex-wrap gap-2">
+        <Menubar>
           {productCategories.map((category) => (
-            <DropdownMenu key={category.name}>
-              <DropdownMenuTrigger asChild>
-                <button className="bg-secondary text-secondary-foreground rounded-md px-4 py-2 hover:bg-accent hover:text-accent-foreground"
-                >{category.name}</button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56">
+            <MenubarMenu key={category.name}>
+              <MenubarTrigger>{category.name}</MenubarTrigger>
+              <MenubarContent>
                 {category.subcategories && category.subcategories.length > 0 ? (
-                  category.subcategories.map((subcategory) => (
-                    <DropdownMenuItem key={subcategory}>{subcategory}</DropdownMenuItem>
-                  ))
+                  <MenubarSub>
+                    <MenubarSubTrigger>{category.name} Subcategories</MenubarSubTrigger>
+                    <MenubarSubContent>
+                      {category.subcategories.map((subcategory) => (
+                        <MenubarItem key={subcategory}>{subcategory}</MenubarItem>
+                      ))}
+                    </MenubarSubContent>
+                  </MenubarSub>
                 ) : (
-                  <DropdownMenuItem disabled>No Subcategories</DropdownMenuItem>
+                  <MenubarItem disabled>No Subcategories</MenubarItem>
                 )}
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </MenubarContent>
+            </MenubarMenu>
           ))}
-        </div>
+        </Menubar>
       </div>
 
       {/* Product Image Carousel */}
@@ -114,18 +119,37 @@ function ProductImageCarousel({
 }: {
   images: { id: number; src: string; alt: string }[];
 }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const scroll = () => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollLeft += 2; // Adjust scroll speed as needed
+        if (scrollRef.current.scrollLeft >= scrollRef.current.scrollWidth - scrollRef.current.clientWidth) {
+          scrollRef.current.scrollLeft = 0;
+        }
+      }
+    };
+
+    const intervalId = setInterval(scroll, 30); // Adjust interval as needed
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
-    <div className="overflow-x-auto whitespace-nowrap py-4">
-      {images.map((image) => (
-        <Image
-          key={image.id}
-          src={image.src}
-          alt={image.alt}
-          width={200}
-          height={150}
-          className="inline-block mr-4 rounded-md shadow-md"
-        />
-      ))}
+    <div className="overflow-x-hidden whitespace-nowrap py-4 relative" ref={scrollRef}>
+      <div className="animate-horizontal-scroll">
+        {images.map((image) => (
+          <Image
+            key={image.id}
+            src={image.src}
+            alt={image.alt}
+            width={200}
+            height={150}
+            className="inline-block mr-4 rounded-md shadow-md"
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -190,9 +214,27 @@ function CompanyAdvantages({
 }: {
   advantages: { id: number; imageSrc: string; alt: string }[];
 }) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const scroll = () => {
+      if (scrollRef.current) {
+        scrollRef.current.scrollLeft += 1; // Adjust scroll speed as needed
+        if (scrollRef.current.scrollLeft >= scrollRef.current.scrollWidth - scrollRef.current.clientWidth) {
+          scrollRef.current.scrollLeft = 0;
+        }
+      }
+    };
+
+    const intervalId = setInterval(scroll, 20); // Adjust interval as needed
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
-    <ScrollArea className="mb-4">
-      <div className="flex space-x-4 p-4">
+    <div className="overflow-x-hidden whitespace-nowrap py-4 relative">
+      <h2 className="text-lg font-semibold mb-2">Company Advantages</h2>
+      <div className="flex space-x-4 p-4" ref={scrollRef}>
         {advantages.map((advantage) => (
           <div key={advantage.id} className="min-w-[300px]">
             <Image
@@ -205,9 +247,10 @@ function CompanyAdvantages({
           </div>
         ))}
       </div>
-    </ScrollArea>
+    </div>
   );
 }
+
 
 function SuccessStories({
   stories,
@@ -233,3 +276,6 @@ function SuccessStories({
     </div>
   );
 }
+
+
+    
