@@ -23,6 +23,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 
 // Placeholder data (replace with your actual data)
 const companyName = 'Acme Corp';
@@ -77,6 +78,8 @@ const contactInfo = {
 };
 
 export default function Home() {
+  const [isContactCardVisible, setIsContactCardVisible] = useState(true);
+
   return (
     <div className="container mx-auto p-4 relative">
       {/* Company Name */}
@@ -128,7 +131,15 @@ export default function Home() {
       <SuccessStories stories={successStories} />
 
       {/* Contact Card */}
-      <ContactCard contactInfo={contactInfo} />
+      {isContactCardVisible && <ContactCard contactInfo={contactInfo} />}
+
+      {/* Toggle Button */}
+      <Button
+        onClick={() => setIsContactCardVisible(!isContactCardVisible)}
+        className="fixed bottom-4 right-4 z-20"
+      >
+        {isContactCardVisible ? 'Hide Contact' : 'Show Contact'}
+      </Button>
     </div>
   );
 }
@@ -349,3 +360,4 @@ function ContactCard({ contactInfo }: { contactInfo: { title: string; descriptio
     </Card>
   );
 }
+
