@@ -19,9 +19,10 @@ import {
   MenubarSubTrigger,
   MenubarTrigger,
 } from "@/components/ui/menubar"
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+import { Input } from '@/components/ui/input';
 
 // Placeholder data (replace with your actual data)
 const companyName = 'Acme Corp';
@@ -49,20 +50,22 @@ const companyProfile = {
   description:
     'Acme Corp is a leading provider of innovative solutions.  We are committed to excellence and customer satisfaction.  Our products are designed to meet the highest standards of quality and performance. We are a global company with a presence in over 50 countries. We have a team of over 10,000 employees worldwide.  We are a publicly traded company with a market capitalization of over $10 billion.  We are a Fortune 500 company.  We are a great place to work.   We offer a competitive salary and benefits package.  We are an equal opportunity employer.  We are looking for talented and motivated individuals to join our team.  Apply today!',
 };
-const products = Array.from({ length: 20 }, (_, i) => ({
+const initialProducts = Array.from({ length: 20 }, (_, i) => ({
   id: i,
   name: `Product ${i + 1}`,
   imageSrc: `https://picsum.photos/id/${i + 30}/200/200`,
 }));
+
 const companyAdvantages = Array.from({ length: 5 }, (_, i) => ({
   id: i,
-  imageSrc: `https://picsum.photos/id/${i + 40}/300/100`,
+  imageSrc: `https://picsum.photos/id/${i + 50}/300/100`,
   alt: `Advantage ${i + 1}`,
 }));
+
 const successStories = Array.from({ length: 15 }, (_, i) => ({
   id: i,
-  caseName: `Case ${i + 1}`,
-  imageSrc: `https://picsum.photos/id/${i + 50}/200/150`,
+  caseName: `Success Story ${i + 1}`,
+  imageSrc: `https://picsum.photos/id/${i + 70}/200/150`,
 }));
 
 export default function Home() {
@@ -108,7 +111,7 @@ export default function Home() {
       <CompanyProfile profile={companyProfile} />
 
       {/* Product Center */}
-      <ProductCenter products={products} />
+      <ProductCenter products={initialProducts} />
 
       {/* Company Advantages Carousel */}
       <CompanyAdvantages advantages={companyAdvantages} />
@@ -195,27 +198,43 @@ function ProductCenter({
 }: {
   products: { id: number; name: string; imageSrc: string }[];
 }) {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredProducts = products.filter(product =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-      {products.map((product) => (
-        <Link key={product.id} href={`/product/${product.id}`}>
-          <Card >
-            <Image
-              src={product.imageSrc}
-              alt={product.name}
-              width={200}
-              height={200}
-              className="rounded-md object-cover h-32 w-full"
-            />
-            <CardContent className="p-2">
-              <CardTitle className="text-sm font-semibold">{product.name}</CardTitle>
-            </CardContent>
-          </Card>
-        </Link>
-      ))}
+    <div>
+      <Input
+        type="text"
+        placeholder="Search products..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className="mb-4"
+      />
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+        {filteredProducts.map((product) => (
+          <Link key={product.id} href={`/product/${product.id}`}>
+            <Card >
+              <Image
+                src={product.imageSrc}
+                alt={product.name}
+                width={200}
+                height={200}
+                className="rounded-md object-cover h-32 w-full"
+              />
+              <CardContent className="p-2">
+                <CardTitle className="text-sm font-semibold">{product.name}</CardTitle>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
+
 
 function CompanyAdvantages({
   advantages,
@@ -284,3 +303,4 @@ function SuccessStories({
     </div>
   );
 }
+
