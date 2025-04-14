@@ -113,7 +113,7 @@ export default function Home() {
                   setSelectedCategory(category.label);
                 }}
                 className={cn(
-                  "block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white",
+                  "block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-md",
                   selectedCategory === category.label ? "bg-primary text-primary-foreground" : ""
                 )}
               >
@@ -195,7 +195,7 @@ export default function Home() {
           </Link>
         ))}
       </div>
-      
+
       {/* Company Profile */}
       <Card className="h-48 overflow-hidden mt-4">
         <CardHeader>
@@ -216,7 +216,7 @@ export default function Home() {
           </CardDescription>
         </CardContent>
       </Card>
-
+      
       {/* Company Advantages */}
       <div className="overflow-hidden mt-4">
         <div className="flex animate-horizontal-scroll">
