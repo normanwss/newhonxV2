@@ -16,9 +16,16 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'www.primefaces.org',
+        port: '',
+        pathname: '/primereact/showcase/demo/images/**',
+      },
     ],
   },
 };
 
 export default nextConfig;
+
 
