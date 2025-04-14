@@ -193,25 +193,27 @@ export default function Home() {
               <CardContent>
                 <ScrollArea className="w-full whitespace-nowrap">
                   <div className="flex animate-horizontal-scroll">
-                    {keyProducts.map(product => (
-                      <Link key={product.id} href={`/product/${product.id}`}>
-                        <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
-                          <div className="flex justify-center items-center h-32">
-                            <Image
-                              src={product.imageSrc}
-                              alt={product.name}
-                              width={200}
-                              height={150}
-                              className="rounded-md object-cover"
-                              style={{maxWidth: '100%', maxHeight: '100%'}}
-                            />
-                          </div>
-                          <CardContent>
-                            <CardTitle className="text-sm">{product.name}</CardTitle>
-                          </CardContent>
-                        </Card>
-                      </Link>
-                    ))}
+                    {keyProducts.length > 0 ?
+                      keyProducts.slice(0, Math.min(keyProducts.length, 10)).map(product => (
+                        <Link key={product.id} href={`/product/${product.id}`}>
+                          <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
+                            <div className="flex justify-center items-center h-32">
+                              <Image
+                                src={product.imageSrc}
+                                alt={product.name}
+                                width={200}
+                                height={150}
+                                className="rounded-md object-cover"
+                                style={{maxWidth: '100%', maxHeight: '100%'}}
+                              />
+                            </div>
+                            <CardContent>
+                              <CardTitle className="text-sm">{product.name}</CardTitle>
+                            </CardContent>
+                          </Card>
+                        </Link>
+                      )) : <p>No products found.</p>
+                    }
                   </div>
                 </ScrollArea>
               </CardContent>
@@ -417,4 +419,3 @@ export default function Home() {
     </>
   );
 }
-
