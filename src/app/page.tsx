@@ -20,6 +20,7 @@ import {
   MenubarTrigger,
 } from "@/components/ui/menubar"
 import { useEffect, useRef } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 // Placeholder data (replace with your actual data)
 const companyName = 'Acme Corp';
@@ -75,8 +76,11 @@ export default function Home() {
         <div className="flex">
           {productCategories.map((category) => (
             <div key={category.name} className="relative group">
-              <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-accent hover:text-accent-foreground">
+              <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-accent hover:text-accent-foreground flex items-center">
                 {category.name}
+                {category.subcategories && category.subcategories.length > 0 && (
+                  <ChevronDown className="ml-2 h-4 w-4" />
+                )}
               </button>
               {category.subcategories && category.subcategories.length > 0 && (
                 <div className="absolute left-0 mt-2 py-2 w-48 bg-popover border border-border rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
@@ -277,3 +281,4 @@ function SuccessStories({
     </div>
   );
 }
+
