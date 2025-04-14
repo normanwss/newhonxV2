@@ -105,7 +105,7 @@ export default function Home() {
       <div className="relative bg-secondary">
         <ul className="flex space-x-4 p-4">
           {productCategories.map(category => (
-            <li key={category.label} className="relative group">
+            <li key={category.label} className="relative">
               <Link
                 href="#"
                 onClick={(e) => {
@@ -113,7 +113,7 @@ export default function Home() {
                   setSelectedCategory(category.label);
                 }}
                 className={cn(
-                  "block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white rounded-md",
+                  "block py-2 px-4 hover:bg-accent hover:text-accent-foreground rounded-md",
                   selectedCategory === category.label ? "bg-primary text-primary-foreground" : ""
                 )}
               >
@@ -133,7 +133,7 @@ export default function Home() {
                                 e.preventDefault();
                                 setSelectedCategory(subCategory.label);
                               }}
-                              className="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                              className="block py-2 px-4 hover:bg-accent hover:text-accent-foreground"
                             >
                               {subCategory.label}
                             </Link>
@@ -180,7 +180,7 @@ export default function Home() {
       <div className="grid grid-cols-5 gap-4 p-4">
         {filteredProducts.slice(0, 20).map(product => (
           <Link key={product.id} href={`/product/${product.id}`} passHref>
-            <Card className="cursor-pointer">
+            <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
               <Image
                 src={product.imageSrc}
                 alt={product.name}
