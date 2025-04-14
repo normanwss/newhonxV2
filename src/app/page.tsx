@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/menubar"
 import { useEffect, useRef } from 'react';
 import { ChevronDown } from 'lucide-react';
+import Link from 'next/link';
 
 // Placeholder data (replace with your actual data)
 const companyName = 'Acme Corp';
@@ -197,18 +198,20 @@ function ProductCenter({
   return (
     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
       {products.map((product) => (
-        <Card key={product.id}>
-          <Image
-            src={product.imageSrc}
-            alt={product.name}
-            width={200}
-            height={200}
-            className="rounded-md object-cover h-32 w-full"
-          />
-          <CardContent className="p-2">
-            <CardTitle className="text-sm font-semibold">{product.name}</CardTitle>
-          </CardContent>
-        </Card>
+        <Link key={product.id} href={`/product/${product.id}`}>
+          <Card >
+            <Image
+              src={product.imageSrc}
+              alt={product.name}
+              width={200}
+              height={200}
+              className="rounded-md object-cover h-32 w-full"
+            />
+            <CardContent className="p-2">
+              <CardTitle className="text-sm font-semibold">{product.name}</CardTitle>
+            </CardContent>
+          </Card>
+        </Link>
       ))}
     </div>
   );
@@ -281,4 +284,3 @@ function SuccessStories({
     </div>
   );
 }
-
