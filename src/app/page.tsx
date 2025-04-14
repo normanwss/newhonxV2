@@ -355,7 +355,7 @@ function ContactCard({ contactInfo, onClose }: { contactInfo: { title: string; d
     <Card className="fixed top-1/2 transform -translate-y-1/2 right-4 w-80 z-10 overflow-hidden" style={{ height: '300px' }}>
       <CardHeader className="flex items-center justify-between">
         <CardTitle>{contactInfo.title}</CardTitle>
-        <Button variant="ghost" size="icon" onClick={onClose}>
+        <Button variant="ghost" size="icon" onClick={onClose} className="absolute top-2 right-2">
           <X className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </Button>
@@ -368,6 +368,7 @@ function ContactCard({ contactInfo, onClose }: { contactInfo: { title: string; d
     </Card>
   );
 }
+
 
 
 
