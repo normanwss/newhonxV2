@@ -7,15 +7,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 // Placeholder data (replace with your actual data)
@@ -66,8 +57,17 @@ export default function Home() {
       {/* Company Name */}
       <h1 className="text-2xl font-bold mb-4 text-foreground">{companyName}</h1>
 
-      {/* Product Category Menu */}
-      <ProductCategoryMenu categories={productCategories} />
+      {/* Product Category */}
+      <div className="mb-4">
+        <h2 className="text-lg font-semibold mb-2">Product Categories</h2>
+        <div className="flex flex-wrap gap-2">
+          {productCategories.map((category) => (
+            <div key={category.name} className="bg-secondary text-secondary-foreground rounded-md px-4 py-2">
+              {category.name}
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Product Image Carousel */}
       <ProductImageCarousel images={productImages} />
@@ -87,35 +87,6 @@ export default function Home() {
   );
 }
 
-function ProductCategoryMenu({
-  categories,
-}: {
-  categories: { name: string; subcategories: string[] }[];
-}) {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="bg-secondary text-secondary-foreground rounded-md px-4 py-2 hover:bg-secondary/80">
-        Product Categories
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        {categories.map((category) =>
-          category.subcategories ? (
-            <DropdownMenuSub key={category.name}>
-              <DropdownMenuSubTrigger>{category.name}</DropdownMenuSubTrigger>
-              <DropdownMenuSubContent>
-                {category.subcategories.map((subcategory) => (
-                  <DropdownMenuItem key={subcategory}>{subcategory}</DropdownMenuItem>
-                ))}
-              </DropdownMenuSubContent>
-            </DropdownMenuSub>
-          ) : (
-            <DropdownMenuItem key={category.name}>{category.name}</DropdownMenuItem>
-          )
-        )}
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-}
 
 function ProductImageCarousel({
   images,
