@@ -234,22 +234,27 @@ export default function Home() {
       </div>
 
       {/* Success Stories */}
-      <div className="grid grid-cols-5 gap-4 p-4">
-        {successStories.slice(0, 15).map((story, index) => (
-          <Card key={index}>
-            <Image
-              src={story.imageSrc}
-              alt={story.caseName}
-              width={200}
-              height={150}
-              className="rounded-md object-cover"
-            />
-            <CardContent>
-              <CardTitle className="text-sm">{story.caseName}</CardTitle>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Success Stories</CardTitle>
+        </CardHeader>
+        <div className="grid grid-cols-5 gap-4 p-4">
+          {successStories.slice(0, 15).map((story, index) => (
+            <Card key={index}>
+              <Image
+                src={story.imageSrc}
+                alt={story.caseName}
+                width={200}
+                height={150}
+                className="rounded-md object-cover"
+              />
+              <CardContent>
+                <CardTitle className="text-sm">{story.caseName}</CardTitle>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </Card>
 
       {/* Contact Information Card */}
       {isContactCardVisible && (
