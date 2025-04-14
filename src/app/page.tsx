@@ -58,7 +58,7 @@ const companyAdvantages = Array.from({ length: 5 }, (_, i) => ({
 const successStories = Array.from({ length: 15 }, (_, i) => ({
   id: i,
   caseName: `Success Story ${i + 1}`,
-  imageSrc: `https://picsum.photos/id/${i + 70}/200/150`,
+  imageSrc: `https://picsum.photos/id/${i + 70}/200/150`
 }));
 
 const contactInfo = {
@@ -96,7 +96,11 @@ export default function Home() {
           {productCategories.map((category) => (
             <div key={category.name} className="relative group">
               <button
-                className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md hover:bg-accent hover:text-accent-foreground flex items-center"
+                className={`px-4 py-2 rounded-md hover:bg-accent hover:text-accent-foreground flex items-center
+                  ${selectedCategory === category.name
+                    ? 'bg-primary text-primary-foreground' // Highlight selected category
+                    : 'bg-secondary text-secondary-foreground'
+                  }`}
                 onClick={() => handleCategoryClick(category.name)}
               >
                 {category.name}
@@ -110,7 +114,11 @@ export default function Home() {
                     <a
                       key={subcategory}
                       href="#"
-                      className="block px-4 py-2 text-sm text-popover-foreground hover:bg-accent hover:text-accent-foreground"
+                      className={`block px-4 py-2 text-sm hover:bg-accent hover:text-accent-foreground
+                        ${selectedCategory === subcategory
+                          ? 'bg-primary text-primary-foreground' // Highlight selected subcategory
+                          : 'text-popover-foreground'
+                        }`}
                       onClick={() => handleCategoryClick(subcategory)}
                     >
                       {subcategory}
@@ -395,14 +403,3 @@ function ContactCard({ contactInfo, onClose }: { contactInfo: { title: string; d
     </Card>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
