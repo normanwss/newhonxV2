@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {
   Card,
   CardContent,
@@ -10,19 +10,21 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@/components/ui/menubar';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Badge } from '@/components/ui/badge';
+import {Input} from '@/components/ui/input';
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from '@/components/ui/menubar';
+import {ScrollArea} from '@/components/ui/scroll-area';
+import {Badge} from '@/components/ui/badge';
 
 // Placeholder data (replace with your actual data)
 const companyName = 'Acme Corp';
 
 const productCategories = [
-  {
-    name: 'All',
-    subcategories: [],
-  },
   {
     name: 'Category 1',
     subcategories: ['Subcategory 1.1', 'Subcategory 1.2'],
@@ -49,7 +51,7 @@ const productCategories = [
   },
 ];
 
-const products = Array.from({ length: 30 }, (_, i) => ({
+const products = Array.from({length: 30}, (_, i) => ({
   id: i,
   name: `Product ${i + 1}`,
   category: `Category ${Math.floor(i / 10) + 1}`,
@@ -57,13 +59,13 @@ const products = Array.from({ length: 30 }, (_, i) => ({
   description: `This is a description of Product ${i + 1}.`,
 }));
 
-const companyAdvantages = Array.from({ length: 5 }, (_, i) => ({
+const companyAdvantages = Array.from({length: 5}, (_, i) => ({
   id: i,
   imageSrc: `https://picsum.photos/id/${i + 50}/600/200`,
   description: `Advantage ${i + 1}`,
 }));
 
-const successStories = Array.from({ length: 15 }, (_, i) => ({
+const successStories = Array.from({length: 15}, (_, i) => ({
   id: i,
   caseName: `Success Story ${i + 1}`,
   imageSrc: `https://picsum.photos/id/${i + 70}/200/150`,
@@ -71,7 +73,8 @@ const successStories = Array.from({ length: 15 }, (_, i) => ({
 
 const contactInfo = {
   title: 'Contact Us',
-  qrCodeImage: 'https://www.primefaces.org/primereact/showcase/demo/images/qr-code.png',
+  qrCodeImage:
+    'https://www.primefaces.org/primereact/showcase/demo/images/qr-code.png',
   phoneNumber: '123-456-7890',
   email: 'info@example.com',
   address: '123 Main St, Anytown USA',
@@ -84,11 +87,14 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isContactCardVisible, setIsContactCardVisible] = useState(false);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
-  const [currentSubMenu, setCurrentSubMenu] = useState<string|null>(null);
+  const [currentSubMenu, setCurrentSubMenu] = useState<string | null>(null);
 
   const filteredProducts = products.filter(product => {
-    const searchMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const categoryMatch = selectedCategory === 'All' || product.category === selectedCategory;
+    const searchMatch = product.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    const categoryMatch =
+      selectedCategory === 'All' || product.category === selectedCategory;
     return searchMatch && categoryMatch;
   });
 
@@ -117,22 +123,29 @@ export default function Home() {
           placeholder="Search products..."
           className="w-1/3"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={e => setSearchQuery(e.target.value)}
         />
       </div>
 
-
       <Menubar>
         <MenubarMenu>
-          <MenubarTrigger onClick={() => handleCategoryClick('All')} className={selectedCategory === 'All' ? 'bg-accent text-accent-foreground rounded-md' : 'rounded-md'}>
+          <MenubarTrigger
+            onClick={() => handleCategoryClick('All')}
+            className={
+              selectedCategory === 'All'
+                ? 'bg-accent text-accent-foreground rounded-md'
+                : 'rounded-md'
+            }>
             All
           </MenubarTrigger>
         </MenubarMenu>
-        {productCategories.map((category) => (
-          <MenubarMenu key={category.name} onPointerEnter={() => {
-            setCurrentSubMenu(category.name);
-            setIsSubMenuOpen(true);
-          }}
+        {productCategories.map(category => (
+          <MenubarMenu
+            key={category.name}
+            onPointerEnter={() => {
+              setCurrentSubMenu(category.name);
+              setIsSubMenuOpen(true);
+            }}
             onPointerLeave={() => {
               setCurrentSubMenu(null);
               setIsSubMenuOpen(false);
@@ -145,15 +158,24 @@ export default function Home() {
                     ? handleContactUsCategoryClick
                     : () => handleCategoryClick(category.name)
               }
-              className={selectedCategory === category.name ? 'bg-accent text-accent-foreground rounded-md' : 'rounded-md'}
-            >
+              className={
+                selectedCategory === category.name
+                  ? 'bg-accent text-accent-foreground rounded-md'
+                  : 'rounded-md'
+              }>
               {category.name}
-              {category.subcategories.length > 0 && <Badge className="ml-2">+{category.subcategories.length}</Badge>}
+              {category.subcategories.length > 0 && (
+                <Badge className="ml-2">
+                  +{category.subcategories.length}
+                </Badge>
+              )}
             </MenubarTrigger>
             {category.subcategories.length > 0 && (
               <MenubarContent>
-                {category.subcategories.map((subcategory) => (
-                  <MenubarItem key={subcategory} onClick={() => handleCategoryClick(subcategory)}>
+                {category.subcategories.map(subcategory => (
+                  <MenubarItem
+                    key={subcategory}
+                    onClick={() => handleCategoryClick(subcategory)}>
                     {subcategory}
                   </MenubarItem>
                 ))}
@@ -173,10 +195,7 @@ export default function Home() {
               <ScrollArea className="w-full whitespace-nowrap">
                 <div className="flex animate-horizontal-scroll">
                   {keyProducts.map(product => (
-                    <Link
-                      key={product.id}
-                      href={`/product/${product.id}`}
-                    >
+                    <Link key={product.id} href={`/product/${product.id}`}>
                       <Card className="w-64 shrink-0 cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
                         <div className="flex justify-center items-center h-32">
                           <Image
@@ -185,7 +204,7 @@ export default function Home() {
                             width={200}
                             height={150}
                             className="rounded-md object-cover"
-                            style={{ maxWidth: '100%', maxHeight: '100%' }}
+                            style={{maxWidth: '100%', maxHeight: '100%'}}
                           />
                         </div>
                         <CardContent>
@@ -201,16 +220,15 @@ export default function Home() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Product List {selectedCategory !== "All" ? `(${selectedCategory})` : "(All)"}</CardTitle>
+              <CardTitle>
+                Product List {selectedCategory !== 'All' ? `(${selectedCategory})` : '(All)'}
+              </CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4">
               {filteredProducts.length > 0 ? (
                 <div className="grid grid-cols-5 gap-4 p-4">
                   {filteredProducts.slice(0, 20).map(product => (
-                    <Link
-                      key={product.id}
-                      href={`/product/${product.id}`}
-                    >
+                    <Link key={product.id} href={`/product/${product.id}`}>
                       <Card className="cursor-pointer transition-colors hover:bg-accent hover:text-accent-foreground">
                         <div className="flex justify-center items-center h-32">
                           <Image
@@ -219,7 +237,7 @@ export default function Home() {
                             width={200}
                             height={150}
                             className="rounded-md object-cover"
-                            style={{ maxWidth: '100%', maxHeight: '100%' }}
+                            style={{maxWidth: '100%', maxHeight: '100%'}}
                           />
                         </div>
                         <CardContent>
@@ -299,11 +317,9 @@ export default function Home() {
         </div>
       ) : null}
 
-
-
       <Card>
         <CardHeader>
-            <CardTitle>Company Advantages</CardTitle>
+          <CardTitle>Company Advantages</CardTitle>
         </CardHeader>
         <CardContent className="flex gap-4 p-4">
           {companyAdvantages.map(advantage => (
@@ -316,7 +332,7 @@ export default function Home() {
                     width={200}
                     height={150}
                     className="rounded-md object-cover"
-                    style={{ maxWidth: '100%', maxHeight: '100%' }}
+                    style={{maxWidth: '100%', maxHeight: '100%'}}
                   />
                 </div>
                 <CardContent>
@@ -343,7 +359,7 @@ export default function Home() {
                     width={200}
                     height={150}
                     className="rounded-md object-cover"
-                    style={{ maxWidth: '100%', maxHeight: '100%' }}
+                    style={{maxWidth: '100%', maxHeight: '100%'}}
                   />
                 </div>
                 <CardContent>
@@ -355,13 +371,11 @@ export default function Home() {
         </CardContent>
       </Card>
 
-
       {isContactCardVisible && (
         <div className="fixed top-1/2 right-4 transform -translate-y-1/2 bg-white border rounded-md shadow-lg p-4 w-80 z-50">
           <button
             className="absolute top-2 right-2 px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
-            onClick={toggleContactCardVisibility}
-          >
+            onClick={toggleContactCardVisibility}>
             Hide
           </button>
           <CardTitle>{contactInfo.title}</CardTitle>
@@ -383,10 +397,10 @@ export default function Home() {
       {!isContactCardVisible && (
         <button
           className="fixed top-1/2 right-4 transform -translate-y-1/2 px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-700 z-50"
-          onClick={toggleContactCardVisibility}
-        >
+          onClick={toggleContactCardVisibility}>
           Contact Us
         </button>
       )}
     </>
-  )}
+  );
+}
