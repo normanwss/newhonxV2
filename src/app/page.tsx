@@ -406,10 +406,10 @@ export default function Home() {
 
       <footer className="fixed bottom-0 left-0 w-full bg-white p-4 border-t border-border z-50">
         <nav className="flex justify-around">
-          <Link href="/" className="hover:text-accent transition-colors">Home</Link>
-          <Link href="/products" className="hover:text-accent transition-colors">Products</Link>
-          <Link href="/about" className="hover:text-accent transition-colors">About Us</Link>
-          <Link href="/contact" className="hover:text-accent transition-colors">Contact</Link>
+          <Link href="/" className="hover:bg-accent hover:text-accent-foreground transition-colors p-2 rounded-md">Home</Link>
+          <Link href="/products" className="hover:bg-accent hover:text-accent-foreground transition-colors p-2 rounded-md">Products</Link>
+          <Link href="/about" className="hover:bg-accent hover:text-accent-foreground transition-colors p-2 rounded-md">About Us</Link>
+          <Link href="/contact" className="hover:bg-accent hover:text-accent-foreground transition-colors p-2 rounded-md">Contact</Link>
         </nav>
       </footer>
     </>
