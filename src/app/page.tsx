@@ -68,9 +68,17 @@ const successStories = Array.from({ length: 15 }, (_, i) => ({
   imageSrc: `https://picsum.photos/id/${i + 70}/200/150`,
 }));
 
+const contactInfo = {
+  title: 'Contact Us',
+  description: 'Reach out to us for any inquiries.',
+  email: 'info@example.com',
+  phone: '+1 555-123-4567',
+  address: '123 Main St, Anytown USA',
+};
+
 export default function Home() {
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 relative">
       {/* Company Name */}
       <h1 className="text-2xl font-bold mb-4 text-foreground">{companyName}</h1>
 
@@ -118,6 +126,9 @@ export default function Home() {
 
       {/* Success Stories Section */}
       <SuccessStories stories={successStories} />
+
+      {/* Contact Card */}
+      <ContactCard contactInfo={contactInfo} />
     </div>
   );
 }
@@ -304,3 +315,37 @@ function SuccessStories({
   );
 }
 
+function ContactCard({ contactInfo }: { contactInfo: { title: string; description: string; email: string; phone: string; address: string } }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const scroll = () => {
+      if (cardRef.current) {
+        const scrollHeight = cardRef.current.scrollHeight;
+        const clientHeight = cardRef.current.clientHeight;
+
+        if (scrollHeight > clientHeight) {
+          cardRef.current.scrollTop = (cardRef.current.scrollTop + 1) % (scrollHeight - clientHeight + 1);
+        }
+      }
+    };
+
+    const intervalId = setInterval(scroll, 50); // Adjust interval as needed
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+  return (
+    <Card className="fixed top-1/2 transform -translate-y-1/2 right-4 w-80 z-10 overflow-hidden" style={{ height: '300px' }}>
+      <CardHeader>
+        <CardTitle>{contactInfo.title}</CardTitle>
+        <CardDescription>{contactInfo.description}</CardDescription>
+      </CardHeader>
+      <CardContent ref={cardRef} style={{ overflowY: 'auto', padding: '16px' }}>
+        <p className="mb-2">Email: <a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a></p>
+        <p className="mb-2">Phone: {contactInfo.phone}</p>
+        <p>Address: {contactInfo.address}</p>
+      </CardContent>
+    </Card>
+  );
+}
